@@ -23,6 +23,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ 
 RUN wget https://get.symfony.com/cli/installer -O - | bash && \
     mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
+RUN apt-get install -y unzip
+
 ADD xdebug.ini /usr/local/etc/php/conf.d/
 
 ARG USER_ID
