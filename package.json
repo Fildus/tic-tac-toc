@@ -10,7 +10,7 @@
     "license": "UNLICENSED",
     "private": true,
     "scripts": {
-        "dev-server": "encore dev-server --watch-content-base --content-base templates --port 8080 --host 0.0.0.0 --disable-host-check",
+        "dev-server": "encore dev-server --watch-content-base --content-base templates --content-base src --port 8080 --host 0.0.0.0 --disable-host-check",
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
