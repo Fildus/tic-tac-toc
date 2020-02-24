@@ -17,3 +17,7 @@ clean: ## Nettoie les containers
 .PHONY: test
 test: ## Lance les tests
 	$(dc) exec php bin/phpunit
+
+.PHONY: fix
+fix: ## Lance php-cs-fixer
+	$(dc) exec php vendor/bin/php-cs-fixer fix
