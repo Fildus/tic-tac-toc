@@ -1,6 +1,7 @@
 user := $(shell id -u)
 group := $(shell id -g)
 dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose
+drtest := $(dc) -f run --rm # todo: add docker-compose.test.yml
 
 .PHONY: help
 help: ## Affiche cette aide
@@ -13,3 +14,7 @@ dev: ## Lance le serveur de développement
 .PHONY: clean
 clean: ## Nettoie les containers
 	$(dc) down --volumes
+
+.PHONY: test
+test: ## Lance les tests
+	$(drtest) php bin/phpunit
