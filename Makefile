@@ -30,4 +30,5 @@ node_modules:
 	$(drit) -v $(PWD):/usr/src/app:rw -w /usr/src/app node:12-alpine yarn
 
 .PHONY: install
-install: vendor node_modules ## Installe les dependances node et php
+install: vendor node_modules dev## Installe les dependances node et php
+	$(dc) exec php bin/console d:s:u --force
