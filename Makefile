@@ -25,6 +25,10 @@ fixtures-test: ## Lance les tests
 test: fixtures-test ## Lance les tests
 	$(dc) exec php bin/phpunit
 
+.PHONY: lint
+lint: vendor/autoload.php ## Analyse le code
+	docker run -v $(PWD):/app --rm phpstan/phpstan analyse
+
 .PHONY: fix
 fix: ## Lance php-cs-fixer
 	$(dc) exec php vendor/bin/php-cs-fixer fix
@@ -37,4 +41,3 @@ node_modules:
 
 .PHONY: install
 install: vendor node_modules dev## Installe les dependances node et php
-	$(dc) exec php bin/console d:s:u --force

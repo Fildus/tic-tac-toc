@@ -1,4 +1,7 @@
 # Tic tac toc
+
+[![Build Status](https://travis-ci.com/Fildus/tic-tac-toc.svg?token=uqFBxs9PK4pBaEJy1YJd&branch=master)](https://travis-ci.com/Fildus/tic-tac-toc)
+
 ## launch of tests
 * make install
 * make dev
