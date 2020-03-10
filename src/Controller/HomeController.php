@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/", name="home")
+ * @Route("/", name="home", methods={"GET"})
  * @Template()
  */
 class HomeController

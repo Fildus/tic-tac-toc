@@ -15,8 +15,14 @@ dev: ## Lance le serveur de développement
 clean: ## Nettoie les containers
 	$(dc) down --volumes
 
+.PHONY: fixtures-test
+fixtures-test: ## Lance les tests
+	$(dc) exec php bin/console d:d:c --env=test --if-not-exists
+	$(dc) exec php bin/console d:s:u --env=test --force
+	$(dc) exec php bin/console d:f:l --env=test --group=test -n
+
 .PHONY: test
-test: ## Lance les tests
+test: fixtures-test ## Lance les tests
 	$(dc) exec php bin/phpunit
 
 .PHONY: fix
