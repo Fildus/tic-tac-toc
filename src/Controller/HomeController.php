@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

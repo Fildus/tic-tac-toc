@@ -2,8 +2,6 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\User;
-use App\Tests\ClientTest;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
