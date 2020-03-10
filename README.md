@@ -1,3 +1,10 @@
+# Tic tac toc
+## launch of tests
+* make install
+* make dev
+* wait a little bit ant then
+* make test
+
 ## Shell commands
 To use php and composer the tactic is below
 
