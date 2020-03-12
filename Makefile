@@ -34,7 +34,7 @@ lint: vendor/autoload.php ## Analyse le code
 
 .PHONY: fix
 fix: ## Lance php-cs-fixer
-	$(dc) exec php vendor/bin/php-cs-fixer fix
+	$(dc) run --rm php vendor/bin/php-cs-fixer fix
 
 vendor:
 	$(dr) --no-deps php composer install
