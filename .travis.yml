@@ -3,5 +3,5 @@ services:
 install:
     - make install
 script:
-#    - make lint
+    - make lint
     - make test
