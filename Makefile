@@ -4,7 +4,7 @@ dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose
 dr := $(dc) run --rm
 de := docker-compose exec
 sy := $(de) php bin/console
-drtest := $(dc) -f docker-compose.test.yml run
+drtest := $(dc) -f docker-compose.test.yml
 
 .PHONY: help
 help: ## Affiche cette aide
@@ -13,23 +13,35 @@ help: ## Affiche cette aide
 .PHONY: dev
 dev: install ## Lance le serveur de développement
 	$(dc) up -d
+	$(dc) exec php bin/console app:database-ready dev
+	$(dc) exec php bin/console d:d:c --env=dev --if-not-exists
+	$(dc) exec php bin/console d:s:u --env=dev --force
+	$(dc) exec php bin/console d:f:l --env=dev --group=dev -n
 
 .PHONY: clean
 clean: ## Nettoie les containers
 	$(dc) down --volumes
 
-.PHONY: test
-test: ## Lance les tests
+.PHONY: build-test
+build-test:
 	$(dc) -f docker-compose.test.yml up --build -d
-	$(drtest) php-test bin/console app:database-ready
-	$(drtest) php-test bin/console d:d:c --env=test --if-not-exists
-	$(drtest) php-test bin/console d:s:u --env=test --force
-	$(drtest) php-test bin/console d:f:l --env=test --group=test -n
-	$(drtest) php-test vendor/bin/phpunit
+	$(drtest) exec php-test bin/console app:database-ready test
+	$(drtest) exec php-test bin/console d:d:c --env=test --if-not-exists
+	$(drtest) exec php-test bin/console d:s:u --env=test --force
+	$(drtest) exec php-test bin/console d:f:l --env=test --group=test -n
+
+.PHONY: test
+test: build-test ## Lance les tests
+	$(drtest) exec php-test vendor/bin/phpunit
+	$(dc) -f docker-compose.test.yml down
+
+.PHONY: tt
+tt: build-test install ## Lance le watcher phpunit
+	$(drtest) run php-test vendor/bin/phpunit-watcher watch --filter="nothing"
 	$(dc) -f docker-compose.test.yml down
 
 .PHONY: lint
-lint: vendor/autoload.php ## Analyse le code
+lint: install ## Analyse le code
 	docker run -v $(PWD):/app --rm phpstan/phpstan analyse
 
 .PHONY: fix

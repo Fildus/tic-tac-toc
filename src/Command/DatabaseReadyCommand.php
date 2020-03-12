@@ -4,6 +4,7 @@ namespace App\Command;
 
 use PDO;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -13,7 +14,9 @@ class DatabaseReadyCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('checks if the test database is ready');
+        $this
+            ->setDescription('checks if the test database is ready')
+            ->addArgument('env', InputArgument::OPTIONAL, 'what env is it? (dev or test)');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -21,12 +24,22 @@ class DatabaseReadyCommand extends Command
         $username = 'root';
         $password = 'root';
 
-        $dsn = 'mysql:host=db-test';
+        if (null === $input->getArgument('env') || 'test' === $input->getArgument('env')) {
+            $dsn = 'mysql:host=db-test';
+        } else {
+            $dsn = 'mysql:host=db';
+        }
+
         $this->test($dsn, $username, $password);
 
         $output->writeln('database found');
 
-        $dsn .= ';dbname=tic-tac-toc_test;';
+        if (null === $input->getArgument('env') || 'test' === $input->getArgument('env')) {
+            $dsn .= ';dbname=tic-tac-toc_test;';
+        } else {
+            $dsn .= ';dbname=tic-tac-toc;';
+        }
+
         $this->test($dsn, $username, $password);
 
         $output->writeln('database ready');
