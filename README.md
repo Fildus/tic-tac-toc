@@ -2,9 +2,22 @@
 
 [![Build Status](https://travis-ci.com/Fildus/tic-tac-toc.svg?token=uqFBxs9PK4pBaEJy1YJd&branch=master)](https://travis-ci.com/Fildus/tic-tac-toc)
 
+## Development server
+* ```make dev``` start the database and the application
+
+## Install the application
+* ```make install``` install the application
+
 ## Test the application
-* make install
-* make test
+* ```make test``` test the application (**phpunit**)
+* ```make tt``` Automatically restart tests (**phpunit-watcher**)
+* ```make lint``` Checks that the code does not contain any errors (**phpstan**)
+
+## Correct typos
+* ```make fix``` correct typos (**php-cs-fixer**)
+
+## Clean
+* ```make clean``` clean volumes, networks and containers (**dev**)
 
 ## Shell commands (fish)
 

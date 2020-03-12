@@ -31,12 +31,12 @@ build-test:
 	$(drtest) exec php-test bin/console d:f:l --env=test --group=test -n
 
 .PHONY: test
-test: build-test ## Lance les tests
+test: install build-test ## Lance les tests
 	$(drtest) exec php-test vendor/bin/phpunit
 	$(dc) -f docker-compose.test.yml down
 
 .PHONY: tt
-tt: build-test install ## Lance le watcher phpunit
+tt: install build-test ## Lance le watcher phpunit
 	$(drtest) run php-test vendor/bin/phpunit-watcher watch --filter="nothing"
 	$(dc) -f docker-compose.test.yml down
 
@@ -45,7 +45,7 @@ lint: install ## Analyse le code
 	docker run -v $(PWD):/app --rm phpstan/phpstan analyse
 
 .PHONY: fix
-fix: ## Lance php-cs-fixer
+fix: install ## Lance php-cs-fixer
 	$(dc) run --rm php vendor/bin/php-cs-fixer fix
 
 vendor:
