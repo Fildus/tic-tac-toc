@@ -1,29 +1,32 @@
 user := $(shell id -u)
 group := $(shell id -g)
 dc := USER_ID=$(user) GROUP_ID=$(group) docker-compose
-drit := docker run --user $(user):$(group) -it
+dr := $(dc) run --rm
+de := docker-compose exec
+sy := $(de) php bin/console
+drtest := $(dc) -f docker-compose.test.yml run
 
 .PHONY: help
 help: ## Affiche cette aide
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: dev
-dev: ## Lance le serveur de développement
-	$(dc) up -d --build --force
+dev: install ## Lance le serveur de développement
+	$(dc) up -d
 
 .PHONY: clean
 clean: ## Nettoie les containers
 	$(dc) down --volumes
 
-.PHONY: fixtures-test
-fixtures-test: ## Lance les tests
-	$(dc) exec php bin/console d:d:c --env=test --if-not-exists
-	$(dc) exec php bin/console d:s:u --env=test --force
-	$(dc) exec php bin/console d:f:l --env=test --group=test -n
-
 .PHONY: test
-test: fixtures-test ## Lance les tests
-	$(dc) exec php bin/phpunit
+test: ## Lance les tests
+	$(dc) -f docker-compose.test.yml up --build -d
+	$(drtest) php-test bin/console app:database-ready
+	$(drtest) php-test bin/console d:d:c --env=test --if-not-exists
+	$(drtest) php-test bin/console d:s:u --env=test --force
+	$(drtest) php-test bin/console d:f:l --env=test --group=test -n
+	$(drtest) php-test vendor/bin/phpunit
+	$(dc) -f docker-compose.test.yml down
 
 .PHONY: lint
 lint: vendor/autoload.php ## Analyse le code
@@ -34,10 +37,13 @@ fix: ## Lance php-cs-fixer
 	$(dc) exec php vendor/bin/php-cs-fixer fix
 
 vendor:
-	$(drit) -v $(PWD):/app:rw --workdir /app composer install
+	$(dr) --no-deps php composer install
 
 node_modules:
-	$(drit) -v $(PWD):/usr/src/app:rw -w /usr/src/app node:12-alpine yarn
+	$(dr) --no-deps node yarn
+
+public/build:
+	$(dr) --no-deps node yarn run build
 
 .PHONY: install
-install: vendor node_modules dev## Installe les dependances node et php
+install: vendor node_modules public/build ## Installe les dependances node et php
