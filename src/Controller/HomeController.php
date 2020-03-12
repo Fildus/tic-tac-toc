@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class HomeController
 {
-    public function __invoke()
+    public function __invoke(): void
     {
     }
 }

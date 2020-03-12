@@ -33,7 +33,7 @@ class ClientTest extends WebTestCase
         return $client;
     }
 
-    public function testAuthUser()
+    public function testAuthUser(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
         $security = unserialize($client->getContainer()->get('session')->get('_security_main'));
@@ -42,7 +42,7 @@ class ClientTest extends WebTestCase
         static::assertTrue(in_array(User::ROLE_USER, $security->getUser()->getRoles()));
     }
 
-    public function testAuthAdmin()
+    public function testAuthAdmin(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
         $security = unserialize($client->getContainer()->get('session')->get('_security_main'));

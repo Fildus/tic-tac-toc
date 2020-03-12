@@ -19,7 +19,7 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->manager = $manager;
 
@@ -28,7 +28,7 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
         $manager->flush();
     }
 
-    public function createUser(string $mail, array $role, string $password)
+    public function createUser(string $mail, array $role, string $password): void
     {
         $user = new User();
         $user

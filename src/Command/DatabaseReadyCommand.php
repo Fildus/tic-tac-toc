@@ -12,7 +12,7 @@ class DatabaseReadyCommand extends Command
 {
     protected static $defaultName = 'app:database-ready';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('checks if the test database is ready')
@@ -54,7 +54,7 @@ class DatabaseReadyCommand extends Command
             try {
                 $db = new PDO($dsn, $username, $password);
             } catch (\Exception $e) {
-                sleep(0.1);
+                sleep(1);
             }
         } while (!($db instanceof PDO));
 

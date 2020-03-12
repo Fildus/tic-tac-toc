@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SecurityControllerTest extends WebTestCase
 {
-    public function testLoginResponse()
+    public function testLoginResponse(): void
     {
         $client = static::createClient();
 
