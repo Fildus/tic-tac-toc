@@ -2,7 +2,6 @@ services:
     - docker
 install:
     - make install
-    - make dev
 script:
-    - make lint
+#    - make lint
     - make test

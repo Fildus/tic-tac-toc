@@ -44,7 +44,6 @@ class DatabaseReadyCommand extends Command
                 sleep(0.1);
             }
         } while (!($db instanceof PDO));
-        dump($db);
         return true;
     }
 }
