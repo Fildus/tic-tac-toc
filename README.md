@@ -5,6 +5,15 @@
 ## Development server
 * ```make dev``` start the database and the application
 
+### website
+http://localhost:8000/
+
+### adminer
+http://localhost:8888/
+* Serveur=***db***
+* Utilisateur=***root***
+* Mot de passe=***root***
+
 ## Install the application
 * ```make install``` install the application
 
