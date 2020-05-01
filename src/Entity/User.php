@@ -43,7 +43,7 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="user")
      */
-    private $projects;
+    private Collection $projects;
 
     public function __construct()
     {
@@ -138,7 +138,7 @@ class User implements UserInterface
     {
         if (!$this->projects->contains($project)) {
             $this->projects[] = $project;
-            $project->setUsers($this);
+            $project->setUser($this);
         }
 
         return $this;
@@ -149,8 +149,8 @@ class User implements UserInterface
         if ($this->projects->contains($project)) {
             $this->projects->removeElement($project);
             // set the owning side to null (unless already changed)
-            if ($project->getUsers() === $this) {
-                $project->setUsers(null);
+            if ($project->getUser() === $this) {
+                $project->setUser(null);
             }
         }
 
