@@ -46,7 +46,7 @@ class UserControllerTest extends WebTestCase
 
         static::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $form = $crawler->selectButton('Create')->form();
+        $form = $crawler->selectButton('Créer')->form();
         $values = $form->getPhpValues();
 
         $email = 'someoneNew@test.test';
@@ -106,7 +106,7 @@ class UserControllerTest extends WebTestCase
             ])
         );
 
-        $form = $crawler->selectButton('Save changes')->form();
+        $form = $crawler->selectButton('Sauvegarder les modifications')->form();
         $values = $form->getPhpValues();
 
         $email = 'someoneNew2@test.test';
@@ -165,7 +165,7 @@ class UserControllerTest extends WebTestCase
             ])
         );
 
-        $form = $crawler->selectButton('Save changes')->form();
+        $form = $crawler->selectButton('Sauvegarder les modifications')->form();
         $values = $form->getPhpValues();
 
         $values['User']['password'] = 'new password';

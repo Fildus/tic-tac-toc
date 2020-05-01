@@ -21,9 +21,12 @@ class UserCrudController extends AbstractCrudController
 {
     use Common;
 
-    public static string $entityFqcn = User::class;
-
     private EncodePassword $encodePassword;
+
+    public static function getEntityFqcn(): string
+    {
+        return User::class;
+    }
 
     public function __construct(EncodePassword $encodePassword)
     {
