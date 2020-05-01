@@ -28,7 +28,7 @@ http://localhost:8888/
 ## Clean
 * ```make clean``` clean volumes, networks and containers (**dev**)
 
-## Shell commands (fish)
+## Shell commands
 
 |run|command|
 |---|---|
