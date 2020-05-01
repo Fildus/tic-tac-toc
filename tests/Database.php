@@ -20,7 +20,7 @@ class Database
             $application->run(new StringInput('doctrine:database:drop --if-exists --force -q'));
             $application->run(new StringInput('doctrine:database:create --env=test --if-not-exists'));
             $application->run(new StringInput('doctrine:schema:update -env=test --force'));
-            $application->run(new StringInput('doctrine:fixtures:load -env=test --group=test -n'));
+            $application->run(new StringInput('doctrine:fixtures:load -env=test -n'));
         } catch (Exception $e) {
             new Exception($e->getMessage());
         }

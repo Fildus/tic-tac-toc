@@ -5,8 +5,8 @@
         "php": "^7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "ext-pdo": "*",
         "ext-json": "*",
+        "ext-pdo": "*",
         "doctrine/annotations": "^1.8",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "easycorp/easyadmin-bundle": "v3.0.0-alpha7",
@@ -27,6 +27,7 @@
         "symfony/yaml": "5.0.*"
     },
     "require-dev": {
+        "fzaninotto/faker": "^1.9",
         "friendsofphp/php-cs-fixer": "^2.16",
         "phpstan/phpstan": "^0.12.14",
         "phpstan/phpstan-doctrine": "^0.12.9",

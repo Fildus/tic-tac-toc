@@ -12,9 +12,13 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class SecurityControllerTest extends WebTestCase
 {
-    public function testLoginResponse(): void
+    protected function setUp(): void
     {
         Database::reload();
+    }
+
+    public function testLoginResponse(): void
+    {
         $client = static::createClient();
 
         $client->request(Request::METHOD_GET, '/login');
@@ -29,7 +33,6 @@ class SecurityControllerTest extends WebTestCase
 
     public function testLogin(): void
     {
-        Database::reload();
         $client = static::createClient();
         $client->followRedirects();
 
@@ -56,7 +59,6 @@ class SecurityControllerTest extends WebTestCase
 
     public function testLogout(): void
     {
-        Database::reload();
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
         $client->followRedirects();
 

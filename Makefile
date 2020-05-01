@@ -16,7 +16,7 @@ dev: install clean ## Lance le serveur de développement
 	$(dc) exec php bin/console app:database-ready dev
 	$(dc) exec php bin/console d:d:c --env=dev --if-not-exists
 	$(dc) exec php bin/console d:s:u --env=dev --force
-	$(dc) exec php bin/console d:f:l --env=dev --group=dev -n
+	$(dc) exec php bin/console d:f:l --env=dev -n
 
 .PHONY: clean
 clean: ## Nettoie les containers
@@ -28,7 +28,7 @@ build-test:
 	$(drtest) exec php-test bin/console app:database-ready test
 	$(drtest) exec php-test bin/console d:d:c --env=test --if-not-exists
 	$(drtest) exec php-test bin/console d:s:u --env=test --force
-	$(drtest) exec php-test bin/console d:f:l --env=test --group=test -n
+	$(drtest) exec php-test bin/console d:f:l --env=test -n
 
 .PHONY: test
 test: install build-test ## Lance les tests
@@ -54,8 +54,16 @@ vendor:
 node_modules:
 	$(dr) --no-deps node yarn
 
+.PHONY: public/build
 public/build:
 	$(dr) --no-deps node yarn run build
+
+.PHONY: reload_database
+reload_database: ## relance la base de données
+	$(drtest) exec php-test bin/console app:database-ready test
+	$(drtest) exec php-test bin/console d:d:c --env=test --if-not-exists
+	$(drtest) exec php-test bin/console d:s:u --env=test --force
+	$(drtest) exec php-test bin/console d:f:l --env=test -n
 
 .PHONY: install
 install: vendor node_modules public/build ## Installe les dependances node et php

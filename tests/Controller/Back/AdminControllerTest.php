@@ -11,9 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminControllerTest extends WebTestCase
 {
-    public function testAdminResponseSuccessAdmin(): void
+    protected function setUp(): void
     {
         Database::reload();
+    }
+
+    public function testAdminResponseSuccessAdmin(): void
+    {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
 
         $client->request(
@@ -28,7 +32,6 @@ class AdminControllerTest extends WebTestCase
 
     public function testAdminResponseFailUser(): void
     {
-        Database::reload();
         $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
 
         $client->request(
@@ -41,7 +44,6 @@ class AdminControllerTest extends WebTestCase
 
     public function testAdminResponseFailAnonymous(): void
     {
-        Database::reload();
         $client = static::createClient();
 
         $client->request(

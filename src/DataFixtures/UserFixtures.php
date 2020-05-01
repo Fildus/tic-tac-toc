@@ -1,18 +1,20 @@
 <?php
 
-namespace App\DataFixtures\Test;
+namespace App\DataFixtures;
 
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
+use Faker\Generator;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserFixtures extends Fixture implements FixtureGroupInterface
+class UserFixtures extends Fixture
 {
     private UserPasswordEncoderInterface $passwordEncoder;
 
     private ObjectManager $manager;
+    private Generator $faker;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -22,10 +24,16 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
     public function load(ObjectManager $manager): void
     {
         $this->manager = $manager;
+        $this->faker = Factory::create();
 
         $this->createUser('user@user.com', [User::ROLE_USER], 'test');
         $this->createUser('admin@admin.com', [User::ROLE_ADMIN], 'test');
-        $manager->flush();
+
+        for ($i = 0; $i < 11; ++$i) {
+            $this->createUser($this->faker->email.$i, [User::ROLE_USER], 'test');
+        }
+
+        $this->manager->flush();
     }
 
     public function createUser(string $mail, array $role, string $password): void
@@ -40,13 +48,5 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
             ));
 
         $this->manager->persist($user);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getGroups(): array
-    {
-        return ['test'];
     }
 }

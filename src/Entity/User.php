@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Validator\Roles;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,15 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface
 {
+    use Common;
+
     public const ROLE_USER = 'ROLE_USER';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
-
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -43,9 +40,14 @@ class User implements UserInterface
      */
     private ?string $password = null;
 
-    public function getId(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="user")
+     */
+    private $projects;
+
+    public function __construct()
     {
-        return $this->id;
+        $this->projects = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -122,5 +124,36 @@ class User implements UserInterface
     public function __toString()
     {
         return $this->email ?? 'null';
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): self
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
+            $project->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): self
+    {
+        if ($this->projects->contains($project)) {
+            $this->projects->removeElement($project);
+            // set the owning side to null (unless already changed)
+            if ($project->getUsers() === $this) {
+                $project->setUsers(null);
+            }
+        }
+
+        return $this;
     }
 }

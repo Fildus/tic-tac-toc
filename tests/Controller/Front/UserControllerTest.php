@@ -13,9 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserControllerTest extends WebTestCase
 {
-    public function testNewResponse(): void
+    protected function setUp(): void
     {
         Database::reload();
+    }
+
+    public function testNewResponse(): void
+    {
         $client = static::createClient();
 
         $client->request(
@@ -28,7 +32,6 @@ class UserControllerTest extends WebTestCase
 
     public function testAdminNew(): void
     {
-        Database::reload();
         $client = static::createClient();
 
         $crawler = $client->request(
@@ -57,7 +60,6 @@ class UserControllerTest extends WebTestCase
 
     public function testAdminEdit(): void
     {
-        Database::reload();
         $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
         $client->followRedirects();
 
@@ -94,23 +96,30 @@ class UserControllerTest extends WebTestCase
 
     public function changePassword(Crawler $crawler, KernelBrowser $client, string $email): void
     {
+        /** @var User $user */
+        $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => $email]);
+        $oldPassword = $user->getPassword();
+
         $form = $crawler->filter('form[name="update_password"]')->selectButton('save')->form();
 
         $values = $form->getPhpValues();
-
-        $values['update_password']['password'] = 'somethingNew';
+        $passwordNotHash = 'somethingNew';
+        $values['update_password']['password']['first'] = 'somethingNew';
+        $values['update_password']['password']['second'] = 'somethingNew';
 
         $client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
 
-        static::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        /** @var User $user */
+        $user = $client->getContainer()->get('doctrine')->getRepository(User::class)->findOneBy(['email' => $email]);
+        $newPassword = $user->getPassword();
 
-        static::assertNotEmpty($client->getContainer()->get('doctrine')->getRepository(User::class)->findBy(['email' => $email]));
+        static::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertNotEquals($newPassword, $oldPassword);
+        static::assertNotEquals($newPassword, $passwordNotHash);
     }
 
     public function testAdminDeleteResponseSuccess(): void
     {
-        Database::reload();
-
         $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
 
         $userDb = $client->getContainer()->get('doctrine')->getManager()->getRepository(User::class);

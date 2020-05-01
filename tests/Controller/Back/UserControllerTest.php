@@ -153,8 +153,6 @@ class UserControllerTest extends WebTestCase
         /** @var User $data */
         $data = $userDb->findOneBy(['email' => $email]);
 
-//        $oldPassword = $data->getPassword();
-
         $crawler = $client->request(
             Request::METHOD_GET,
             $client->getContainer()->get('router')->generate('admin', [

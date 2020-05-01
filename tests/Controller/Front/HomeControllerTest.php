@@ -9,9 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HomeControllerTest extends WebTestCase
 {
-    public function testHomeResponse(): void
+    protected function setUp(): void
     {
         Database::reload();
+    }
+
+    public function testHomeResponse(): void
+    {
         $client = static::createClient();
 
         $client->request(Request::METHOD_GET, '/');

@@ -3,15 +3,14 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use App\Services\EncodePassword;
-use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,65 +20,48 @@ class UserCrudController extends AbstractCrudController
 {
     use Common;
 
-    private EncodePassword $encodePassword;
-
     public static function getEntityFqcn(): string
     {
         return User::class;
-    }
-
-    public function __construct(EncodePassword $encodePassword)
-    {
-        $this->encodePassword = $encodePassword;
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
             ->setEntityLabelInPlural('utilisateurs')
-            ->setEntityLabelInSingular('utilisateur');
+            ->setEntityLabelInSingular('utilisateur')
+            ->setDateFormat('dd-MM-y');
     }
 
     public function configureFields(string $pageName): iterable
     {
+        $id = EmailField::new('id');
+        $email = EmailField::new('email');
+        $password = TextField::new('password');
+        $roles = CollectionField::new('roles');
+        $projects = CollectionField::new('projects');
+        $createdAt = DateTimeField::new('createdAt');
+        $updatedAt = DateTimeField::new('updatedAt');
+
         if ($this->isCrudAction('password')) {
-            return [
-                TextField::new('password'),
-            ];
+            return [$password];
         }
 
-        if (Action::INDEX === $pageName) {
-            return [
-                IntegerField::new('id'),
-                TextField::new('email'),
-                CollectionField::new('roles'),
-                TextField::new('password')->setMaxLength(30),
-            ];
+        if (Action::NEW === $pageName) {
+            return [$password, $projects, $email, $roles];
         }
 
         if (Action::EDIT === $pageName) {
             return [
-                TextField::new('email')->setMaxLength(30),
-                CollectionField::new('roles')
-                    ->setFormTypeOption('attr', [
-                        'data-autocomplete-url' => $this->generateUrl('user_autocomplete_roles'),
-                    ]),
+                $email,
+                $roles->setFormTypeOption('attr', [
+                    'data-autocomplete-url' => $this->generateUrl('user_autocomplete_roles'),
+                ]),
+                $projects,
             ];
         }
 
-        if (Action::NEW === $pageName) {
-            return [
-                TextField::new('email'),
-                CollectionField::new('roles'),
-                TextField::new('password')->setMaxLength(30),
-            ];
-        }
-
-        return [
-            TextField::new('email'),
-            TextField::new('password'),
-            CollectionField::new('roles'),
-        ];
+        return [$id, $email, $roles, $projects, $createdAt, $updatedAt];
     }
 
     public function configureActions(Actions $actions): Actions
@@ -104,26 +86,6 @@ class UserCrudController extends AbstractCrudController
     public function password(AdminContext $context): Response
     {
         return $this->redirectToCrud($context, Action::EDIT);
-    }
-
-    /**
-     * @param object $entityInstance
-     */
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        $this->encodePassword->encode($entityInstance);
-
-        parent::updateEntity($entityManager, $entityInstance);
-    }
-
-    /**
-     * @param object $entityInstance
-     */
-    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        $this->encodePassword->encode($entityInstance);
-
-        parent::persistEntity($entityManager, $entityInstance);
     }
 
     /**
