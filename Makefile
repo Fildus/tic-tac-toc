@@ -11,7 +11,7 @@ help: ## Affiche cette aide
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: dev
-dev: install ## Lance le serveur de développement
+dev: install clean ## Lance le serveur de développement
 	$(dc) up -d
 	$(dc) exec php bin/console app:database-ready dev
 	$(dc) exec php bin/console d:d:c --env=dev --if-not-exists
@@ -41,11 +41,11 @@ tt: install build-test ## Lance le watcher phpunit
 	$(dc) -f docker-compose.test.yml down
 
 .PHONY: lint
-lint: install ## Analyse le code
+lint: ## Analyse le code
 	docker run -v $(PWD):/app --rm phpstan/phpstan analyse
 
 .PHONY: fix
-fix: install ## Lance php-cs-fixer
+fix: ## Lance php-cs-fixer
 	$(dc) run --rm php vendor/bin/php-cs-fixer fix
 
 vendor:

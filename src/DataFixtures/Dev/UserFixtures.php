@@ -25,6 +25,11 @@ class UserFixtures extends Fixture implements FixtureGroupInterface
 
         $this->createUser('user@user.com', [User::ROLE_USER], 'test');
         $this->createUser('admin@admin.com', [User::ROLE_ADMIN], 'test');
+
+        for ($i = 0; $i < 20; ++$i) {
+            $this->createUser('someone'.$i.'@some.com', [User::ROLE_USER], 'test');
+        }
+
         $manager->flush();
     }
 

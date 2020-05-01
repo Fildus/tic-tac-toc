@@ -2,31 +2,38 @@
 
 namespace App\Entity;
 
+use App\Validator\Roles;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("email", message="L'email {{ value }} n'est plus disponible")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
 {
-    const ROLE_USER = 'ROLE_USER';
-    const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email()
      */
-    private string $email;
+    private ?string $email = null;
 
     /**
      * @ORM\Column(type="json")
+     * @Roles()
      */
     private array $roles = [];
 
@@ -34,7 +41,7 @@ class User implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private string $password;
+    private ?string $password = null;
 
     public function getId(): ?int
     {
@@ -70,7 +77,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
     }
@@ -110,7 +117,10 @@ class User implements UserInterface
      */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+    }
+
+    public function __toString()
+    {
+        return $this->email ?? 'null';
     }
 }

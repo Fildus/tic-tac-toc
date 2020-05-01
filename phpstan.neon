@@ -10,6 +10,7 @@ parameters:
     - tests
   excludes_analyse:
     - src/Migrations/*
+    - src/Controller/Admin/DashboardController.php
   checkMissingIterableValueType: false
   checkGenericClassInNonGenericObjectType: false
   ignoreErrors:

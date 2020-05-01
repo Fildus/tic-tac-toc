@@ -17,8 +17,9 @@ webpack_encore:
     # builds:
         # pass "frontend" as the 3rg arg to the Twig functions
         # {{ encore_entry_script_tags('entry1', null, 'frontend') }}
-
-        # frontend: '%kernel.project_dir%/public/frontend/build'
+    builds:
+         front: '%kernel.project_dir%/public/front/build'
+         admin: '%kernel.project_dir%/public/admin/build'
 
     # Cache the entrypoints.json (rebuild Symfony's cache when entrypoints.json changes)
     # Put in config/packages/prod/webpack_encore.yaml

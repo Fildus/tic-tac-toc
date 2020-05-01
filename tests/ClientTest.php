@@ -35,19 +35,20 @@ class ClientTest extends WebTestCase
 
     public function testAuthUser(): void
     {
-        $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
+        $client = self::createAuthorizedClient(User::ROLE_USER);
         $security = unserialize($client->getContainer()->get('session')->get('_security_main'));
 
-        static::assertEquals(get_class($security), UsernamePasswordToken::class);
-        static::assertTrue(in_array(User::ROLE_USER, $security->getUser()->getRoles()));
+        static::assertEquals(UsernamePasswordToken::class, get_class($security));
+        static::assertTrue(in_array(User::ROLE_USER, $security->getUser()->getRoles(), true));
     }
 
     public function testAuthAdmin(): void
     {
-        $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
+        $client = self::createAuthorizedClient(User::ROLE_ADMIN);
         $security = unserialize($client->getContainer()->get('session')->get('_security_main'));
 
-        static::assertEquals(get_class($security), UsernamePasswordToken::class);
-        static::assertTrue(in_array(User::ROLE_ADMIN, $security->getUser()->getRoles()));
+        static::assertEquals(UsernamePasswordToken::class, get_class($security));
+
+        static::assertTrue(in_array(User::ROLE_ADMIN, $security->getUser()->getRoles(), true));
     }
 }

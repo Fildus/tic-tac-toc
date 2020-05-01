@@ -8,10 +8,10 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
-    .setOutputPath('public/build/')
-    .setPublicPath('/build')
-    .addEntry('js/app', './assets/js/app.js')
-    .addStyleEntry('css/app', './assets/css/app.scss')
+    .setOutputPath('public/front/build')
+    .setPublicPath('/front/build')
+    .addEntry('js/app', './assets/front/js/app.js')
+    .addStyleEntry('css/app', './assets/front/css/app.scss')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
@@ -24,7 +24,48 @@ Encore
     })
     .enableSassLoader()
     .enableIntegrityHashes(Encore.isProduction())
-    //.enableReactPreset()
+    .addAliases({
+        '@front': path.resolve('assets', 'front', 'js')
+    })
 ;
 
-module.exports = Encore.getWebpackConfig();
+// build the second configuration
+const front = Encore.getWebpackConfig();
+
+// Set a unique name for the config (needed later!)
+front.name = 'front';
+
+Encore.reset()
+
+Encore
+    .setOutputPath('public/admin/build')
+    .setPublicPath('/admin/build')
+    .addEntry('js/app', './assets/admin/js/app.js')
+    .addStyleEntry('css/app', './assets/admin/css/app.scss')
+    .splitEntryChunks()
+    .enableSingleRuntimeChunk()
+    .cleanupOutputBeforeBuild()
+    .enableBuildNotifications()
+    .enableSourceMaps(!Encore.isProduction())
+    .enableVersioning(Encore.isProduction())
+    .configureBabelPresetEnv((config) => {
+        config.useBuiltIns = 'usage';
+        config.corejs = 3;
+    })
+    .enableSassLoader()
+    .enableIntegrityHashes(Encore.isProduction())
+    .addAliases({
+        '@admin': path.resolve('assets', 'admin', 'js')
+    })
+;
+
+// build the second configuration
+const admin = Encore.getWebpackConfig();
+
+// Set a unique name for the config (needed later!)
+admin.name = 'admin';
+
+module.exports = [
+    front,
+    admin
+];

@@ -20,7 +20,7 @@ services:
             MYSQL_USER: root
             MYSQL_DATABASE: tic-tac-toc_test
         ports:
-            - 5433:5432
+            - 3307:3306
         networks:
             tic-tac-toc_test:
 networks:

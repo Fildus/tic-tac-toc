@@ -16,6 +16,10 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "tailwindcss": "^1.2.0"
+        "@fortawesome/fontawesome-free": "^5.13.0",
+        "autocompleter": "^6.0.3",
+        "bootstrap": "^4.4.1",
+        "jquery": "^3.4.1",
+        "popper.js": "^1.16.1"
     }
 }
