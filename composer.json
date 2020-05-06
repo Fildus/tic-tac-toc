@@ -9,7 +9,7 @@
         "ext-pdo": "*",
         "doctrine/annotations": "^1.8",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
-        "easycorp/easyadmin-bundle": "v3.0.0-alpha7",
+        "easycorp/easyadmin-bundle": "v3.0.0-alpha8",
         "knplabs/knp-paginator-bundle": "^5.1",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/console": "5.0.*",

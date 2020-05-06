@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
@@ -39,7 +40,11 @@ class UserCrudController extends AbstractCrudController
         $email = EmailField::new('email');
         $password = TextField::new('password');
         $roles = CollectionField::new('roles');
-        $projects = CollectionField::new('projects');
+        $projects = AssociationField::new('projects')->setFormTypeOptions([
+            'by_reference' => false,
+            'expanded' => true,
+            'multiple' => true,
+        ]);
         $createdAt = DateTimeField::new('createdAt');
         $updatedAt = DateTimeField::new('updatedAt');
 

@@ -20,10 +20,6 @@ class EncodePassword
             return;
         }
 
-        if (!$this->encoder->needsRehash($entity)) {
-            return;
-        }
-
         $entity->setPassword(
             $this->encoder->encodePassword($entity, $entity->getPassword())
         );

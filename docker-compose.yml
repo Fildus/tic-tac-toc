@@ -41,7 +41,7 @@ services:
             MYSQL_USER: root
             MYSQL_DATABASE: tic-tac-toc
         ports:
-            - 3306:3306 # On expose le port pour pouvoir inspecter la base pendant la phase de développement
+            - 3307:3306
         volumes:
             - db-data:/var/lib/mysql
     adminer:

@@ -2,7 +2,6 @@
 
 namespace App\Tests\Controller\Front;
 
-use App\Tests\Database;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

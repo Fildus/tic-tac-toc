@@ -66,7 +66,7 @@ class UserControllerTest extends WebTestCase
         );
     }
 
-    public function test_frontEdit_responseIsSuccessful()
+    public function test_frontEdit_responseIsSuccessful(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
 
