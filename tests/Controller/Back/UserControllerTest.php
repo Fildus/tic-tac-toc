@@ -10,6 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group UserControllerTest
+ */
 class UserControllerTest extends WebTestCase
 {
     protected function setUp(): void
@@ -17,7 +20,7 @@ class UserControllerTest extends WebTestCase
         Database::reload();
     }
 
-    public function testAdminIndexResponse(): void
+    public function test_adminUserIndex_responseIsSuccessful(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
 
@@ -32,7 +35,7 @@ class UserControllerTest extends WebTestCase
         static::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
     }
 
-    public function testAdminNew(): void
+    public function test_adminUserNew_responseIsSuccessful_createNew(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
 
@@ -63,7 +66,7 @@ class UserControllerTest extends WebTestCase
         static::assertNotEmpty($client->getContainer()->get('doctrine')->getRepository(User::class)->findBy(['email' => $email]));
     }
 
-    public function testAdminEditResponseSuccess(): void
+    public function test_adminEdit_responseIsSuccessful(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
 
@@ -89,7 +92,7 @@ class UserControllerTest extends WebTestCase
         }
     }
 
-    public function testAdminEditChangeEmail(): void
+    public function test_adminEdit_responseIsSuccessful_updateEmail(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
 
@@ -118,11 +121,12 @@ class UserControllerTest extends WebTestCase
         $crawler = $client->followRedirect();
 
         static::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+
         static::assertStringContainsString('Liste des utilisateurs', $crawler->text());
         static::assertNotEmpty($client->getContainer()->get('doctrine')->getRepository(User::class)->findBy(['email' => $email]));
     }
 
-    public function testAdminEditPasswordResponseSuccess(): void
+    public function test_adminEditPassword_responseIsSuccessful(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
 
@@ -144,7 +148,7 @@ class UserControllerTest extends WebTestCase
         static::assertStringContainsString('Édition de l\'utilisateur', $crawler->text());
     }
 
-    public function testAdminEditChangePassword(): void
+    public function test_adminEdit_responseIsSuccessful_updatePassword(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
 
@@ -162,6 +166,8 @@ class UserControllerTest extends WebTestCase
                 'route_name' => 'password',
             ])
         );
+
+        static::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton('Sauvegarder les modifications')->form();
         $values = $form->getPhpValues();
@@ -182,7 +188,7 @@ class UserControllerTest extends WebTestCase
         static::assertNotEquals($user->getPassword(), $data->getPassword());
     }
 
-    public function testAdminDeleteResponseSuccess(): void
+    public function test_adminDelete_responseIsSuccessful_deleteUser(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
 

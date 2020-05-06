@@ -9,6 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group AdminControllerTest
+ */
 class AdminControllerTest extends WebTestCase
 {
     protected function setUp(): void
@@ -16,7 +19,7 @@ class AdminControllerTest extends WebTestCase
         Database::reload();
     }
 
-    public function testAdminResponseSuccessAdmin(): void
+    public function test_adminResponse_isSuccessful_withAdmin(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
 
@@ -30,7 +33,7 @@ class AdminControllerTest extends WebTestCase
         static::assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    public function testAdminResponseFailUser(): void
+    public function test_adminResponse_isFailed_withUser(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
 
@@ -42,7 +45,7 @@ class AdminControllerTest extends WebTestCase
         static::assertEquals(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
     }
 
-    public function testAdminResponseFailAnonymous(): void
+    public function test_adminResponse_isFailed_withAnonymous(): void
     {
         $client = static::createClient();
 

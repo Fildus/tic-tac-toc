@@ -4,40 +4,40 @@ namespace App\Tests\Controller\Front;
 
 use App\Entity\User;
 use App\Tests\ClientTest;
-use App\Tests\Database;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
+/**
+ * @group SecurityControllerTest
+ */
 class SecurityControllerTest extends WebTestCase
 {
-    protected function setUp(): void
-    {
-        Database::reload();
-    }
-
-    public function testLoginResponse(): void
+    public function test_loginResponse(): void
     {
         $client = static::createClient();
 
         $client->request(Request::METHOD_GET, '/login');
-        static::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        self::assertResponseIsSuccessful();
 
         $client->request(Request::METHOD_POST, '/login');
-        static::assertEquals(Response::HTTP_FOUND, $client->getResponse()->getStatusCode());
+        self::assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         $client->request('whatever', '/login');
-        static::assertEquals(Response::HTTP_METHOD_NOT_ALLOWED, $client->getResponse()->getStatusCode());
+        self::assertResponseStatusCodeSame(Response::HTTP_METHOD_NOT_ALLOWED);
     }
 
-    public function testLogin(): void
+    public function test_login_isSuccessful(): void
     {
         $client = static::createClient();
         $client->followRedirects();
 
-        $client->request(Request::METHOD_GET, $client->getContainer()->get('router')->generate('home'));
-        $crawler = $client->request(Request::METHOD_GET, $client->getContainer()->get('router')->generate('app_login'));
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $client->getContainer()->get('router')->generate('app_login')
+        );
+        self::assertResponseIsSuccessful();
 
         $form = $crawler->selectButton('Sign in')->form();
 
@@ -45,24 +45,62 @@ class SecurityControllerTest extends WebTestCase
         $values['email'] = 'admin@admin.com';
         $values['password'] = 'test';
 
-        $client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
+        $client->request(
+            $form->getMethod(),
+            $form->getUri(),
+            $values,
+            $form->getPhpFiles()
+        );
 
-        static::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        self::assertResponseIsSuccessful();
 
-        static::assertStringContainsString('Tic tac toc', (string) $client->getResponse()->getContent());
-        static::assertStringContainsString('home', (string) $client->getResponse()->getContent());
+        self::assertRouteSame('home');
 
         $security = $client->getRequest()->getSession()->get('_security_main', false);
-
         static::assertNotFalse($security && unserialize($security)->getUser());
     }
 
-    public function testLogout(): void
+    public function test_login_isFailed(): void
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $client->getContainer()->get('router')->generate('app_login')
+        );
+        self::assertResponseIsSuccessful();
+
+        $form = $crawler->selectButton('Sign in')->form();
+
+        $values = $form->getPhpValues();
+        $values['email'] = 'something@something.com';
+        $values['password'] = 'test';
+
+        $client->request(
+            $form->getMethod(),
+            $form->getUri(),
+            $values,
+            $form->getPhpFiles()
+        );
+
+        self::assertResponseIsSuccessful();
+
+        self::assertRouteSame('app_login');
+
+        $security = $client->getRequest()->getSession()->get('_security_main', false);
+        static::assertFalse($security && unserialize($security)->getUser());
+    }
+
+    public function test_logout_isSuccessful(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
         $client->followRedirects();
 
-        $client->request(Request::METHOD_GET, $client->getContainer()->get('router')->generate('home'));
+        $client->request(
+            Request::METHOD_GET,
+            $client->getContainer()->get('router')->generate('home')
+        );
 
         $security = $client->getRequest()->getSession()->get('_security_main', false);
         static::assertNotFalse($security);
@@ -73,13 +111,15 @@ class SecurityControllerTest extends WebTestCase
         /** @var User $user */
         $user = $security->getUser();
 
-        $inArrayAdmin = in_array(User::ROLE_ADMIN, $user->getRoles(), true);
+        static::assertTrue(in_array(User::ROLE_ADMIN, $user->getRoles(), true));
 
-        static::assertTrue($inArrayAdmin);
+        $client->request(
+            Request::METHOD_GET,
+            $client->getContainer()->get('router')->generate('app_logout')
+        );
 
-        $client->request(Request::METHOD_GET, $client->getContainer()->get('router')->generate('app_logout'));
-
-        $security = $client->getRequest()->getSession()->get('_security_main', false);
-        static::assertFalse($security);
+        static::assertFalse(
+            $client->getRequest()->getSession()->get('_security_main', false)
+        );
     }
 }

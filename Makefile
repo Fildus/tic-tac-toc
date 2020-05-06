@@ -32,7 +32,7 @@ build-test:
 
 .PHONY: test
 test: install build-test ## Lance les tests
-	$(drtest) exec php-test vendor/bin/phpunit
+	$(drtest) exec php-test vendor/bin/phpunit --coverage-html="var/test"
 	$(dc) -f docker-compose.test.yml down
 
 .PHONY: tt
