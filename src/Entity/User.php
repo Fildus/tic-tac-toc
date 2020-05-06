@@ -41,7 +41,7 @@ class User implements UserInterface
     private ?string $password = null;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="user", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="user", cascade={"persist", "remove"})
      */
     private Collection $projects;
 
