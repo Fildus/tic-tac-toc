@@ -20,13 +20,13 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
         $this->faker = Factory::create();
 
         for ($i = 0; $i < 11; ++$i) {
-            $this->createProject($i);
+            $this->createProject();
         }
 
         $manager->flush();
     }
 
-    public function createProject($i): void
+    public function createProject(): void
     {
         $project = new Project();
         $project
