@@ -3,7 +3,9 @@
 namespace App\Tests\Controller\Back;
 
 use App\Controller\Admin\UserCrudController;
+use App\Entity\Project;
 use App\Entity\User;
+use App\Repository\ProjectRepository;
 use App\Tests\ClientTest;
 use App\Tests\Database;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -15,11 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UserControllerTest extends WebTestCase
 {
-    protected function setUp(): void
-    {
-        Database::reload();
-    }
-
     public function test_adminUserIndex_responseIsSuccessful(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
@@ -126,6 +123,72 @@ class UserControllerTest extends WebTestCase
         static::assertNotEmpty($client->getContainer()->get('doctrine')->getRepository(User::class)->findBy(['email' => $email]));
     }
 
+    public function test_adminEdit_responseIsSuccessful_addProjects(): void
+    {
+        Database::reload();
+        $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
+
+        /** @var User $user */
+        $user = $client
+            ->getContainer()
+            ->get('doctrine')
+            ->getRepository(User::class)
+            ->findOneBy(['email' => 'user@user.com']);
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $client->getContainer()->get('router')->generate('admin', [
+                'crudAction' => 'edit',
+                'crudController' => UserCrudController::class,
+                'entityId' => $user->getId(),
+            ])
+        );
+
+        $form = $crawler->selectButton('Sauvegarder les modifications')->form();
+        $values = $form->getPhpValues();
+        $values['User']['projects'] = [];
+
+        /** @var ProjectRepository $projectRepository */
+        $projectRepository = $client
+            ->getContainer()
+            ->get('doctrine')
+            ->getRepository(Project::class);
+
+        $projects = $projectRepository->findBy([], [], 3);
+
+        $projectsIdAsArray = [];
+        foreach ($projects as $project) {
+            $projectsIdAsArray[$project->getId() - 1] = $project->getId();
+        }
+
+        $values['User']['projects'] = $projectsIdAsArray;
+
+        $client->request(
+            $form->getMethod(),
+            $form->getUri(),
+            $values,
+            $form->getPhpFiles()
+        );
+
+        $crawler = $client->followRedirect();
+        static::assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertStringContainsString('Liste des utilisateurs', $crawler->text());
+
+        $projectRepository = $client
+            ->getContainer()
+            ->get('doctrine')
+            ->getRepository(Project::class);
+
+        $projectsAfter = $projectRepository->findBy([], [], 3);
+
+        $projectsIdsAfter = [];
+        foreach ($projectsAfter as $project) {
+            $projectsIdsAfter[] = $project->getId();
+        }
+
+        static::assertSame($projectsIdAsArray, $projectsIdsAfter);
+    }
+
     public function test_adminEditPassword_responseIsSuccessful(): void
     {
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
@@ -190,6 +253,7 @@ class UserControllerTest extends WebTestCase
 
     public function test_adminDelete_responseIsSuccessful_deleteUser(): void
     {
+        Database::reload();
         $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
 
         $repository = $client->getContainer()->get('doctrine')->getManager()->getRepository(User::class);

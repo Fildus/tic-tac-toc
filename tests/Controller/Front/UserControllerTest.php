@@ -14,11 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class UserControllerTest extends WebTestCase
 {
-    protected function setUp(): void
-    {
-        Database::reload();
-    }
-
     public function test_frontUserNew_responseIsSuccessful(): void
     {
         $client = static::createClient();
@@ -68,6 +63,7 @@ class UserControllerTest extends WebTestCase
 
     public function test_frontEdit_responseIsSuccessful(): void
     {
+        Database::reload();
         $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
 
         $user = $client
@@ -127,6 +123,7 @@ class UserControllerTest extends WebTestCase
 
     public function test_frontUserEdit_responseIsSuccessful_updatePassword(): void
     {
+        Database::reload();
         $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
 
         $email = 'user@user.com';

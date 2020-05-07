@@ -14,10 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AdminControllerTest extends WebTestCase
 {
-    protected function setUp(): void
-    {
-        Database::reload();
-    }
+//    protected function setUp(): void
+//    {
+//        Database::reload();
+//    }
 
     public function test_adminResponse_isSuccessful_withAdmin(): void
     {
