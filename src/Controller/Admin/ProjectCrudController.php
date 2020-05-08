@@ -30,7 +30,7 @@ class ProjectCrudController extends AbstractCrudController
     {
         $id = IdField::new('id');
         $title = TextField::new('title');
-        $content = TextareaField::new('content');
+        $content = TextareaField::new('content')->setMaxLength(30);
         $user = AssociationField::new('user');
 
         if (Action::NEW === $pageName) {

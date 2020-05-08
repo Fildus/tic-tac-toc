@@ -13,6 +13,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $projects = $manager->getRepository(Project::class)->findAll();
+        array_shift($projects);
         shuffle($projects);
 
         $users = $manager->getRepository(User::class)->findAll();

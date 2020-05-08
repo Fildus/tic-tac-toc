@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Project index{% endblock %}
+
+{% block body %}
+{#    {{ dump(projects) }}#}
+
+    {% for project in projects %}
+        <div class="card mt-3 mb-3 shadow">
+            <div class="card-header">
+                <h2 class="card-title">{{ project.title }}</h2>
+            </div>
+            <div class="card-body">
+                <p>{{ project.content }}</p>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <div>
+                    <small class="card-text">utilisateur: {{ project.user.username ?? 'null' }}</small>
+                    <small class="card-text">créé le {{ project.createdAt | date }}</small>
+                    {% if project.createdAt != project.updatedAt %}
+                        <small class="card-text">Modifié le {{ project.updatedAt | date }}</small>
+                    {% endif %}
+                </div>
+                <div>
+                    <a href="#">message</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

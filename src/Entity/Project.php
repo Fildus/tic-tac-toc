@@ -25,7 +25,7 @@ class Project
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="projects")
      */
-    private ?User $user;
+    private ?User $user = null;
 
     public function getTitle(): string
     {

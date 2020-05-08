@@ -7,8 +7,18 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item {{ isCurrentUrl('admin') ? 'active' }}">
-                <a class="nav-link" href="{{ url('admin') }}">Admin</a>
+            <li>
+                <div class="btn-group">
+                    <a class="btn btn-outline-secondary text-white-50" href="{{ url('project_index') }}">Liste des projects</a>
+                    <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ path('project_new') }}">Créer un project</a>
+                        <a class="dropdown-item" href="{{ path('project_index') }}">Ma liste de projects</a>
+                    </div>
+                </div>
             </li>
         </ul>
 
@@ -20,6 +30,9 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a class="dropdown-item" href="{{ url('admin') }}">Admin</a>
+                        {% endif %}
                         <a class="dropdown-item" href="{{ url('front_user_edit', {"id" : app.user.id}) }}">Gérer mon
                             compte</a>
                         <a class="dropdown-item" href="{{ url('app_logout') }}">logout</a>

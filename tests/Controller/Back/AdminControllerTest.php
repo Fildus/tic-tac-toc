@@ -3,57 +3,58 @@
 namespace App\Tests\Controller\Back;
 
 use App\Entity\User;
-use App\Tests\ClientTest;
-use App\Tests\Database;
+use App\Tests\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * @covers \App\Controller\Admin\DashboardController
  * @group AdminControllerTest
  */
 class AdminControllerTest extends WebTestCase
 {
-//    protected function setUp(): void
-//    {
-//        Database::reload();
-//    }
+    use FixturesTrait;
 
+    /**
+     * @covers \App\Controller\Admin\DashboardController::index
+     */
     public function test_adminResponse_isSuccessful_withAdmin(): void
     {
-        $client = ClientTest::createAuthorizedClient(User::ROLE_ADMIN);
+        self::setUpClient(User::ROLE_ADMIN);
 
-        $client->request(
+        self::$client->request(
             Request::METHOD_GET,
-            $client->getContainer()->get('router')->generate('admin', [
-                'route' => 'dashboard',
-            ])
+            self::$router->generate('admin', ['route' => 'dashboard'])
         );
-
-        static::assertEquals(200, $client->getResponse()->getStatusCode());
+        self::assertResponseRedirects();
     }
 
+    /**
+     * @covers \App\Controller\Admin\DashboardController::index
+     */
     public function test_adminResponse_isFailed_withUser(): void
     {
-        $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
+        self::setUpClient(User::ROLE_USER);
 
-        $client->request(
+        self::$client->request(
             Request::METHOD_GET,
-            $client->getContainer()->get('router')->generate('admin')
+            self::$router->generate('admin')
         );
-
-        static::assertEquals(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
+        static::assertEquals(Response::HTTP_FORBIDDEN, self::$client->getResponse()->getStatusCode());
     }
 
+    /**
+     * @covers \App\Controller\Admin\DashboardController::index
+     */
     public function test_adminResponse_isFailed_withAnonymous(): void
     {
-        $client = static::createClient();
+        self::setUpClient(User::IS_AUTHENTICATED_ANONYMOUSLY);
 
-        $client->request(
+        self::$client->request(
             Request::METHOD_GET,
-            $client->getContainer()->get('router')->generate('admin')
+            self::$router->generate('admin')
         );
-
-        static::assertResponseRedirects($client->getContainer()->get('router')->generate('app_login'));
+        static::assertResponseRedirects(self::$router->generate('app_login'));
     }
 }

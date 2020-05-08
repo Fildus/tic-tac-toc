@@ -18,12 +18,12 @@ class AppExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('isCurrentUrl', [$this, 'isCurrentUrl']),
+            new TwigFunction('isActive', [$this, 'isActive']),
         ];
     }
 
-    public function isCurrentUrl(string $url): bool
+    public function isActive(string $url): string
     {
-        return $this->requestStack->getCurrentRequest()->get('_route') === $url;
+        return $this->requestStack->getCurrentRequest()->get('_route') === $url ? 'active' : '';
     }
 }

@@ -3,36 +3,44 @@
 namespace App\Tests\Controller\Front;
 
 use App\Entity\User;
-use App\Tests\ClientTest;
-use App\Tests\Database;
+use App\Tests\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @group UserControllerTest
+ * @covers \App\Controller\Front\UserController
+ * @group UserFrontControllerTest
  */
 class UserControllerTest extends WebTestCase
 {
+    use FixturesTrait;
+
+    /**
+     * @covers \App\Controller\Front\UserController::new
+     */
     public function test_frontUserNew_responseIsSuccessful(): void
     {
-        $client = static::createClient();
+        self::setUpClient(User::IS_AUTHENTICATED_ANONYMOUSLY);
 
-        $client->request(
+        self::$client->request(
             Request::METHOD_GET,
-            $client->getContainer()->get('router')->generate('front_user_new')
+            self::$router->generate('front_user_new')
         );
 
         self::assertResponseIsSuccessful();
     }
 
+    /**
+     * @covers \App\Controller\Front\UserController::new
+     */
     public function test_frontUserNew_responseIsSuccessful_createNew(): void
     {
-        $client = static::createClient();
+        self::setUpClient(User::IS_AUTHENTICATED_ANONYMOUSLY);
 
-        $crawler = $client->request(
+        $crawler = self::$client->request(
             Request::METHOD_GET,
-            $client->getContainer()->get('router')->generate('front_user_new')
+            self::$router->generate('front_user_new')
         );
 
         self::assertResponseIsSuccessful();
@@ -43,56 +51,51 @@ class UserControllerTest extends WebTestCase
         $values['create_account']['email'] = $email;
         $values['create_account']['password'] = 'test';
 
-        $client->request(
+        self::$client->request(
             $form->getMethod(),
             $form->getUri(),
             $values, $form->getPhpFiles()
         );
 
-        $client->followRedirect();
+        self::$client->followRedirect();
         self::assertResponseIsSuccessful();
 
-        static::assertNotEmpty(
-            $client
-                ->getContainer()
-                ->get('doctrine')
-                ->getRepository(User::class)
-                ->findBy(['email' => $email])
-        );
+        static::assertNotEmpty(self::$em->getRepository(User::class)->findBy(['email' => $email]));
     }
 
-    public function test_frontEdit_responseIsSuccessful(): void
+    /**
+     * @covers \App\Controller\Front\UserController::edit
+     */
+    public function test_frontUserEdit_responseIsSuccessful(): void
     {
-        Database::reload();
-        $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
+        self::setUpClient(User::ROLE_USER);
 
-        $user = $client
-            ->getContainer()
-            ->get('doctrine')
+        $user = self::$em
             ->getRepository(User::class)
             ->findOneBy(['email' => 'user@user.com']);
 
-        $client->request(
+        self::$client->request(
             Request::METHOD_GET,
-            $client->getContainer()->get('router')->generate('front_user_edit', ['id' => $user->getId()])
+            self::$router->generate('front_user_edit', ['id' => $user->getId()])
         );
 
         self::assertResponseIsSuccessful();
     }
 
+    /**
+     * @covers \App\Controller\Front\UserController::edit
+     */
     public function test_frontUserEdit_responseIsSuccessful_updateEmail(): void
     {
-        $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
+        self::setUpClient(User::ROLE_USER);
 
-        $user = $client
-            ->getContainer()
-            ->get('doctrine')
+        $user = self::$em
             ->getRepository(User::class)
             ->findOneBy(['email' => 'user@user.com']);
 
-        $crawler = $client->request(
+        $crawler = self::$client->request(
             Request::METHOD_GET,
-            $client->getContainer()->get('router')->generate('front_user_edit', ['id' => $user->getId()])
+            self::$router->generate('front_user_edit', ['id' => $user->getId()])
         );
 
         self::assertResponseIsSuccessful();
@@ -102,44 +105,39 @@ class UserControllerTest extends WebTestCase
         $values = $form->getPhpValues();
         $values['edit_account']['email'] = $email;
 
-        $client->request(
+        self::$client->request(
             $form->getMethod(),
             $form->getUri(),
             $values,
             $form->getPhpFiles()
         );
 
-        $client->followRedirect();
+        self::$client->followRedirect();
         self::assertResponseIsSuccessful();
 
         static::assertNotEmpty(
-            $client
-                ->getContainer()
-                ->get('doctrine')
+            self::$em
                 ->getRepository(User::class)
                 ->findBy(['email' => $email])
         );
     }
 
+    /**
+     * @covers \App\Controller\Front\UserController::edit
+     */
     public function test_frontUserEdit_responseIsSuccessful_updatePassword(): void
     {
-        Database::reload();
-        $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
-
         $email = 'user@user.com';
 
+        self::setUpClient(User::ROLE_USER);
+
         /** @var User $user */
-        $user = $client
-            ->getContainer()
-            ->get('doctrine')
-            ->getRepository(User::class)
-            ->findOneBy(['email' => $email]);
+        $user = self::$em->getRepository(User::class)->findOneBy(['email' => $email]);
 
-        $crawler = $client->request(
+        $crawler = self::$client->request(
             Request::METHOD_GET,
-            $client->getContainer()->get('router')->generate('front_user_edit', ['id' => $user->getId()])
+            self::$router->generate('front_user_edit', ['id' => $user->getId()])
         );
-
         self::assertResponseIsSuccessful();
 
         $oldPasswordHashed = $user->getPassword();
@@ -149,22 +147,13 @@ class UserControllerTest extends WebTestCase
         $values = $form->getPhpValues();
         $values['update_password']['password']['first'] = $newPassword;
         $values['update_password']['password']['second'] = $newPassword;
+        self::$client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
 
-        $client->request(
-            $form->getMethod(),
-            $form->getUri(),
-            $values,
-            $form->getPhpFiles()
-        );
-
-        $client->followRedirect();
-
+        self::$client->followRedirect();
         self::assertResponseIsSuccessful();
 
         /** @var User $user */
-        $user = $client
-            ->getContainer()
-            ->get('doctrine')
+        $user = self::$em
             ->getRepository(User::class)
             ->findOneBy(['email' => $email]);
         $newPasswordHashed = $user->getPassword();
@@ -173,43 +162,30 @@ class UserControllerTest extends WebTestCase
         static::assertNotEquals($oldPasswordHashed, $newPasswordHashed);
     }
 
-    public function test_frontUserDelete_DeleteUser(): void
+    /**
+     * @covers \App\Controller\Front\UserController::delete
+     */
+    public function test_frontUserDelete_deleteUser(): void
     {
-        $client = ClientTest::createAuthorizedClient(User::ROLE_USER);
+        self::setUpClient(User::ROLE_USER);
 
         /** @var User $user */
-        $user = $client
-            ->getContainer()
-            ->get('doctrine')
-            ->getManager()
-            ->getRepository(User::class)
-            ->findOneBy(['email' => 'user@user.com']);
+        $user = self::$em->getRepository(User::class)->findOneBy(['email' => 'user@user.com']);
 
-        $crawler = $client->request(
+        $crawler = self::$client->request(
             Request::METHOD_GET,
-            $client->getContainer()->get('router')->generate('front_user_edit', ['id' => $user->getId()])
+            self::$router->generate('front_user_edit', ['id' => $user->getId()])
         );
 
-        $form = $crawler->filter('form[name="delete_user"]')->selectButton('Supprimer le compte')->form();
+        $form = $crawler
+            ->filter('form[name="delete_user"]')
+            ->selectButton('Supprimer le compte')
+            ->form();
         $values = $form->getPhpValues();
+        self::$client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
 
-        $client->request(
-            $form->getMethod(),
-            $form->getUri(),
-            $values,
-            $form->getPhpFiles()
-        );
-
-        $client->followRedirect();
-        static::assertEquals(Response::HTTP_FOUND, $client->getResponse()->getStatusCode());
-
-        static::assertNull(
-            $client
-                ->getContainer()
-                ->get('doctrine')
-                ->getManager()
-                ->getRepository(User::class)
-                ->findOneBy(['email' => 'user@user.com'])
-        );
+        self::$client->followRedirect();
+        static::assertEquals(Response::HTTP_FOUND, self::$client->getResponse()->getStatusCode());
+        static::assertNull(self::$em->getRepository(User::class)->findOneBy(['email' => 'user@user.com']));
     }
 }
