@@ -3,9 +3,9 @@
 namespace App\Controller\Front;
 
 use App\Entity\User;
-use App\Form\User\CreateAccountType;
-use App\Form\User\EditAccountType;
-use App\Form\User\UpdatePasswordType;
+use App\Form\User\Type\CreateAccountType;
+use App\Form\User\Type\EditAccountType;
+use App\Form\User\Type\UpdatePasswordType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;

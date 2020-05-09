@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\User;
+namespace App\Form\User\Type;
 
 use App\Entity\User;
 use App\EventSubscriber\UserSubscriber;

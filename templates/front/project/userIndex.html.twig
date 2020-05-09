@@ -3,7 +3,7 @@
 {% block title %}Project index{% endblock %}
 
 {% block body %}
-{#    {{ dump(projects) }}#}
+    <h1>Mes projects</h1>
 
     {% for project in projects %}
         <div class="card mt-3 mb-3 shadow">
@@ -23,6 +23,7 @@
                 </div>
                 <div>
                     <a href="#">messages</a>
+                    <a href="{{ path('project_edit', {'id': project.id}) }}">modifier</a>
                 </div>
             </div>
         </div>
