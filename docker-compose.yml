@@ -49,7 +49,7 @@ services:
         image: adminer
         environment:
             ADMINER_DESIGN: arcs-material
-            ADMINER_DEFAULT_SERVER: pgsql
+            ADMINER_DEFAULT_SERVER: db
         links:
             - db
         ports:
