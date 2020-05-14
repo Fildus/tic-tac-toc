@@ -1,9 +1,11 @@
 require('@fortawesome/fontawesome-free/css/all.min.css')
 require('@fortawesome/fontawesome-free/js/all')
 
-const $ = require('jquery')
-require('bootstrap');
+import Vue from 'vue'
+import Navbar from './components/Navbar'
+import MyAccount from './components/MyAccount'
 
-$(document).ready(function() {
-    console.log('everything work')
-});
+new Vue({
+    el: '#vue-app',
+    components: {Navbar, MyAccount}
+})

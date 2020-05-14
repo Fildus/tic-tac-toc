@@ -22,11 +22,12 @@ Encore
         config.useBuiltIns = 'usage';
         config.corejs = 3;
     })
-    .enableSassLoader()
     .enableIntegrityHashes(Encore.isProduction())
     .addAliases({
         '@front': path.resolve('assets', 'front', 'js')
     })
+    .enableVueLoader()
+    .enableSassLoader()
 ;
 
 // build the second configuration

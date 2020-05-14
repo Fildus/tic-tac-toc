@@ -7,11 +7,14 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
     {% block stylesheets %}
         {{ encore_entry_link_tags('css/app', null, 'front') }}
+        {{ encore_entry_link_tags('js/app', null, 'front') }}
     {% endblock %}
 </head>
 <body>
-{% include 'nav.html.twig' %}
-<div class="container mt-5">{% block body %}{% endblock %}</div>
+<div id="vue-app">
+    <Navbar config="{{ appNavbarConfig()|json_encode }}"></Navbar>
+    <div class="container mt-5">{% block body %}{% endblock %}</div>
+</div>
 {% block javascripts %}
     {{ encore_entry_script_tags('js/app', null, 'front') }}
 {% endblock %}

@@ -61,7 +61,6 @@ class UserController extends AbstractController
 
             return $this->redirectToRoute('front_user_edit', [
                 'id' => $user->getId(),
-                '_fragment' => 'dddd',
             ]);
         }
 

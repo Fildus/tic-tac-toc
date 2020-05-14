@@ -26,6 +26,8 @@ RUN wget https://get.symfony.com/cli/installer -O - | bash && \
 RUN apt-get install -y unzip
 
 ADD xdebug.ini /usr/local/etc/php/conf.d/
+RUN docker-php-ext-install opcache
+RUN pecl install apcu
 
 ARG USER_ID
 ARG GROUP_ID

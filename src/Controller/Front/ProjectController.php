@@ -5,7 +5,6 @@ namespace App\Controller\Front;
 use App\Entity\Project;
 use App\Form\Project\Handler\ProjectEditHandler;
 use App\Form\Project\Handler\ProjectNewHandler;
-use App\Form\Project\Type\ProjectType;
 use App\Infrastructure\FormHandler\FormHandlerInterface;
 use App\Repository\ProjectRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
