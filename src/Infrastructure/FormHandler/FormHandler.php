@@ -2,13 +2,15 @@
 
 namespace App\Infrastructure\FormHandler;
 
-use _HumbugBoxe8a38a0636f4\Roave\BetterReflection\Reflection\Exception\ClassDoesNotExist;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FormHandler implements FormHandlerInterface
 {
@@ -21,6 +23,12 @@ class FormHandler implements FormHandlerInterface
         $this->container = $container;
     }
 
+    /**
+     * @return $this
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     public function process(string $className, array $options = [], object $entity = null): self
     {
         /** @var AbstractFormBuilder $handler */
@@ -38,7 +46,7 @@ class FormHandler implements FormHandlerInterface
         $class = $handler->entityName();
 
         if (!class_exists($class)) {
-            throw new ClassDoesNotExist();
+            throw new NotFoundHttpException();
         }
 
         $this->entity = $handler->build($entity ??= new $class(), $options);
