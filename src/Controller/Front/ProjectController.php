@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Front;
 
 use App\Entity\Project;
-use App\Form\Project\Handler\ProjectEditHandler;
 use App\Form\Project\Handler\ProjectNewHandler;
 use App\Infrastructure\FormHandler\FormHandlerInterface;
 use App\Repository\ProjectRepository;
@@ -74,8 +75,6 @@ class ProjectController extends AbstractController
      */
     public function edit(Project $project, FormHandlerInterface $handler): Response
     {
-        $handler->process(ProjectEditHandler::class, [], $project);
-
         if ($handler->isValid()) {
             return $this->redirectToRoute('project_index');
         }
