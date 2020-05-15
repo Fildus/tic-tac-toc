@@ -1,24 +1,29 @@
 <?php
 
-namespace App\Tests\Controller\Front;
+declare(strict_types=1);
+
+namespace App\Tests\Controller\Front\Security;
 
 use App\Entity\User;
 use App\Tests\FixturesTrait;
+use Doctrine\DBAL\ConnectionException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
- * @covers \App\Controller\Front\SecurityController
- * @group SecurityControllerTest
+ * @covers \App\Controller\Front\Security\LoginController
+ *
+ * @group LoginControllerTest
  */
-class SecurityControllerTest extends WebTestCase
+class LoginControllerTest extends WebTestCase
 {
     use FixturesTrait;
 
     /**
-     * @covers \App\Controller\Front\SecurityController::login
+     * @covers \App\Controller\Front\Security\LoginController::__invoke
+     *
+     * @throws ConnectionException
      */
     public function test_loginResponse(): void
     {
@@ -37,7 +42,9 @@ class SecurityControllerTest extends WebTestCase
     }
 
     /**
-     * @covers \App\Controller\Front\SecurityController::login
+     * @covers \App\Controller\Front\Security\LoginController::__invoke
+     *
+     * @throws ConnectionException
      */
     public function test_login_isSuccessful(): void
     {
@@ -64,7 +71,9 @@ class SecurityControllerTest extends WebTestCase
     }
 
     /**
-     * @covers \App\Controller\Front\SecurityController::login
+     * @covers \App\Controller\Front\Security\LoginController::__invoke
+     *
+     * @throws ConnectionException
      */
     public function test_login_isFailed(): void
     {
@@ -85,24 +94,5 @@ class SecurityControllerTest extends WebTestCase
 
         $security = self::$client->getRequest()->getSession()->get('_security_main', false);
         static::assertFalse($security && unserialize($security)->getUser());
-    }
-
-    /**
-     * @covers \App\Controller\Front\SecurityController::logout
-     */
-    public function test_logout_isSuccessful(): void
-    {
-        self::setUpClient(User::ROLE_ADMIN);
-        self::$client->request(Request::METHOD_GET, self::$router->generate('home'));
-
-        /** @var UsernamePasswordToken $security */
-        $security = unserialize(self::$client->getRequest()->getSession()->get('_security_main', false));
-
-        /** @var User $user */
-        $user = $security->getUser();
-        static::assertTrue(in_array(User::ROLE_ADMIN, $user->getRoles(), true));
-
-        self::$client->request(Request::METHOD_GET, self::$router->generate('app_logout'));
-        static::assertFalse(self::$client->getRequest()->getSession()->get('_security_main', false));
     }
 }

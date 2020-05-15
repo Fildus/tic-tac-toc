@@ -50,7 +50,7 @@ lint: ## Analyse le code
 
 .PHONY: fix
 fix: ## Lance php-cs-fixer
-	$(dc) run --rm php vendor/bin/php-cs-fixer fix
+	$(dc) run --rm php vendor/bin/php-cs-fixer fix --allow-risky=yes
 
 vendor:
 	$(dr) --no-deps php composer install

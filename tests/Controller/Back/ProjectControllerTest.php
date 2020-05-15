@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller\Back;
 
 use App\Controller\Admin\ProjectCrudController;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Tests\FixturesTrait;
+use Doctrine\DBAL\ConnectionException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @covers \App\Controller\Admin\ProjectCrudController
+ *
  * @group ProjectControllerTest
  */
 class ProjectControllerTest extends WebTestCase
@@ -19,6 +23,8 @@ class ProjectControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::index
+     *
+     * @throws ConnectionException
      */
     public function test_adminProjectIndex_responseIsSuccessful(): void
     {
@@ -36,6 +42,8 @@ class ProjectControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::new
+     *
+     * @throws ConnectionException
      */
     public function test_adminProjectNew_responseIsSuccessful_createNew(): void
     {
@@ -72,6 +80,8 @@ class ProjectControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::edit
+     *
+     * @throws ConnectionException
      */
     public function test_adminProjectEdit_responseIsSuccessful(): void
     {
@@ -96,6 +106,8 @@ class ProjectControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::edit
+     *
+     * @throws ConnectionException
      */
     public function test_adminProjectEdit_responseIsSuccessful_updateContent(): void
     {
@@ -131,6 +143,8 @@ class ProjectControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::edit
+     *
+     * @throws ConnectionException
      */
     public function test_adminProjectEdit_responseIsSuccessful_setUser(): void
     {
@@ -163,6 +177,8 @@ class ProjectControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::delete
+     *
+     * @throws ConnectionException
      */
     public function test_adminProjectDelete_responseIsSuccessful_deleteProject(): void
     {

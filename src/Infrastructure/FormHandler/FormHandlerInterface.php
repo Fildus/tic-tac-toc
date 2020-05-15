@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\FormHandler;
 
 use Symfony\Component\Form\FormView;

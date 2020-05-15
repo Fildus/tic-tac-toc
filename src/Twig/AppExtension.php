@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Twig;
 
 use App\Entity\User;
@@ -50,7 +52,7 @@ class AppExtension extends AbstractExtension
             'html' => 'Créer un project',
         ];
         $config['dropdown']['projects']['subLinks'][] = [
-            'href' => $this->generator->generate('project_userIndex'),
+            'href' => $this->generator->generate('project_user_index'),
             'html' => 'Mes projects',
         ];
 
@@ -79,7 +81,7 @@ class AppExtension extends AbstractExtension
                 'html' => 'login',
             ];
             $config['dropdown']['connection']['subLinks'][] = [
-                'href' => $this->generator->generate('front_user_new'),
+                'href' => $this->generator->generate('front_user_registration'),
                 'html' => 'Créer un compte',
             ];
         }

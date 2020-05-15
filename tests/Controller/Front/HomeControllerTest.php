@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller\Front;
 
 use App\Entity\User;
 use App\Tests\FixturesTrait;
+use Doctrine\DBAL\ConnectionException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @covers \App\Controller\Front\HomeController
+ *
  * @group HomeControllerTest
  */
 class HomeControllerTest extends WebTestCase
@@ -18,6 +22,8 @@ class HomeControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Front\HomeController::__invoke
+     *
+     * @throws ConnectionException
      */
     public function test_home_responseIsSuccessful(): void
     {
@@ -28,6 +34,8 @@ class HomeControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Front\HomeController::__invoke
+     *
+     * @throws ConnectionException
      */
     public function test_home_responseIsFailed(): void
     {

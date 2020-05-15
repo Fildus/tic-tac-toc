@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Front\User;
+namespace App\Controller\Front\Project;
 
-use App\Form\User\Handler\UserRegistrationHandler;
+use App\Entity\Project;
+use App\Form\Project\Handler\ProjectEditHandler;
 use App\Infrastructure\FormHandler\FormHandlerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,9 +18,10 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 /**
- * @Route("/user/new", name="front_user_registration", methods={"GET","POST"})
+ * @Route("/projects{id}/edit", name="project_edit", methods={"GET","POST"})
+ * @IsGranted("ROLE_USER")
  */
-class RegistrationController
+class EditController
 {
     private Environment $twig;
     private RouterInterface $router;
@@ -34,14 +37,16 @@ class RegistrationController
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function __invoke(FormHandlerInterface $h): Response
+    public function __invoke(Project $project, FormHandlerInterface $h): Response
     {
-        if ($h->process(UserRegistrationHandler::class)->isValid()) {
-            return new RedirectResponse($this->router->generate('app_login'));
+        if ($h->process(ProjectEditHandler::class, [], $project)->isValid()) {
+            return new RedirectResponse($this->router->generate('project_edit', [
+                'id' => $project->getId(),
+            ]));
         }
 
-        return new Response($this->twig->render('front/user/new.html.twig', [
-            'user' => $h->getEntity(),
+        return new Response($this->twig->render('front/project/edit.html.twig', [
+            'project' => $project,
             'form' => $h->getView(),
         ]));
     }

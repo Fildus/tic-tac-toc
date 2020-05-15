@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Controller\Back;
 
 use App\Controller\Admin\UserCrudController;
@@ -12,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @covers \App\Controller\Admin\UserCrudController
+ *
  * @group UserBackControllerTest
  */
 class UserControllerTest extends WebTestCase

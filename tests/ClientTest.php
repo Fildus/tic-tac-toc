@@ -1,15 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests;
 
 use App\Entity\User;
+use Doctrine\DBAL\ConnectionException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
+/**
+ * @group ClientTest
+ */
 class ClientTest extends WebTestCase
 {
     use FixturesTrait;
 
+    /**
+     * @throws ConnectionException
+     */
     public function test_authUser(): void
     {
         self::setUpClient(User::ROLE_USER);
@@ -20,6 +29,9 @@ class ClientTest extends WebTestCase
         static::assertTrue(in_array(User::ROLE_USER, $security->getUser()->getRoles(), true));
     }
 
+    /**
+     * @throws ConnectionException
+     */
     public function test_authAdmin(): void
     {
         self::setUpClient(User::ROLE_ADMIN);

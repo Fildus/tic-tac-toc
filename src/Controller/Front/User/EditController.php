@@ -8,8 +8,6 @@ use App\Entity\User;
 use App\Form\User\Handler\UserEditAccountHandler;
 use App\Form\User\Handler\UserUpdatePasswordHandler;
 use App\Infrastructure\FormHandler\FormHandlerInterface;
-use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,19 +23,11 @@ use Twig\Error\SyntaxError;
 class EditController
 {
     private Environment $twig;
-    private FormFactoryInterface $formFactory;
-    private ManagerRegistry $managerRegistry;
     private RouterInterface $router;
 
-    public function __construct(
-        Environment $twig,
-        FormFactoryInterface $formFactory,
-        ManagerRegistry $managerRegistry,
-        RouterInterface $router
-    ) {
+    public function __construct(Environment $twig, RouterInterface $router)
+    {
         $this->twig = $twig;
-        $this->formFactory = $formFactory;
-        $this->managerRegistry = $managerRegistry;
         $this->router = $router;
     }
 
