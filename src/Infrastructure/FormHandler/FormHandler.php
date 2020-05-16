@@ -51,7 +51,7 @@ class FormHandler implements FormHandlerInterface
             throw new NotFoundHttpException();
         }
 
-        $this->entity = $handler->build($entity ??= new $class(), $options);
+        [$this->entity, $options] = $handler->build($entity ??= new $class(), $options);
 
         $this->form = $formFactory->create($handler->entityType(), $entity);
         $this->form->handleRequest($request);
@@ -60,6 +60,8 @@ class FormHandler implements FormHandlerInterface
             $manager->getRepository($class);
             $manager->persist($this->entity);
             $manager->flush();
+
+            $handler->onSuccess($entity, $options);
         }
 
         return $this;

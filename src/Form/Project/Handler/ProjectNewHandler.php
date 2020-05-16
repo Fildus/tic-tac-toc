@@ -10,7 +10,7 @@ use App\Infrastructure\FormHandler\AbstractFormBuilder;
 
 class ProjectNewHandler extends AbstractFormBuilder
 {
-    public function build(object $entity, array $options = []): object
+    public function build(object $entity, array $options = []): array
     {
         if ($entity instanceof Project) {
             $entity->setUser($options['user']);

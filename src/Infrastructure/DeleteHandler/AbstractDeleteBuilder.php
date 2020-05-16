@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\FormHandler;
+namespace App\Infrastructure\DeleteHandler;
 
-abstract class AbstractFormBuilder
+abstract class AbstractDeleteBuilder
 {
     public function build(object $entity, array $options = []): array
     {
@@ -14,8 +14,4 @@ abstract class AbstractFormBuilder
     public function onSuccess(object $entity, array $options = []): void
     {
     }
-
-    abstract public function entityName(): string;
-
-    abstract public function entityType(): string;
 }

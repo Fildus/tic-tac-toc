@@ -5,50 +5,29 @@ declare(strict_types=1);
 namespace App\Controller\Front\User;
 
 use App\Entity\User;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Form\User\Handler\UserDeleteHandler;
+use App\Infrastructure\DeleteHandler\DeleteHandlerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * @Route("/user/{id}", name="front_user_delete", methods={"DELETE"})
+ * @IsGranted("ROLE_USER")
  */
 class DeleteController
 {
-    private ManagerRegistry $managerRegistry;
     private RouterInterface $router;
-    private CsrfTokenManagerInterface $csrfTokenManager;
-    private TokenStorageInterface $tokenStorage;
 
-    public function __construct(
-        ManagerRegistry $managerRegistry,
-        RouterInterface $router,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        TokenStorageInterface $tokenStorage
-    ) {
-        $this->managerRegistry = $managerRegistry;
+    public function __construct(RouterInterface $router)
+    {
         $this->router = $router;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->tokenStorage = $tokenStorage;
     }
 
-    public function __invoke(Request $request, FlashBagInterface $flashBag, User $user): RedirectResponse
+    public function __invoke(DeleteHandlerInterface $h, User $user): RedirectResponse
     {
-        $token = new CsrfToken('delete'.$user->getId(), $request->request->get('_token'));
-        if ($this->csrfTokenManager->isTokenValid($token)) {
-            $entityManager = $this->managerRegistry->getManager();
-            $entityManager->remove($user);
-            $entityManager->flush();
-
-            $this->tokenStorage->setToken(null);
-
-            $flashBag->add('notice', 'Votre compte a bien été supprimé');
-
+        if ($h->process($user, UserDeleteHandler::class)->isValid()) {
             return new RedirectResponse($this->router->generate('app_logout'));
         }
 
