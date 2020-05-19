@@ -6,7 +6,6 @@ namespace App\Tests\Controller\Front\Security;
 
 use App\Entity\User;
 use App\Tests\FixturesTrait;
-use Doctrine\DBAL\ConnectionException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +21,6 @@ class LoginControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Front\Security\LoginController::__invoke
-     *
-     * @throws ConnectionException
      */
     public function test_loginResponse(): void
     {
@@ -43,8 +40,6 @@ class LoginControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Front\Security\LoginController::__invoke
-     *
-     * @throws ConnectionException
      */
     public function test_login_isSuccessful(): void
     {
@@ -72,8 +67,6 @@ class LoginControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Front\Security\LoginController::__invoke
-     *
-     * @throws ConnectionException
      */
     public function test_login_isFailed(): void
     {

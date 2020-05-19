@@ -6,7 +6,6 @@ namespace App\Tests\Controller\Front\Project;
 
 use App\Entity\User;
 use App\Tests\FixturesTrait;
-use Doctrine\DBAL\ConnectionException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,8 +20,6 @@ class IndexControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Front\Project\IndexController::__invoke
-     *
-     * @throws ConnectionException
      */
     public function test_frontProjectIndex_responseIsSuccessful(): void
     {

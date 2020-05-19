@@ -7,7 +7,6 @@ namespace App\Tests\Controller\Front\Project;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Tests\FixturesTrait;
-use Doctrine\DBAL\ConnectionException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,8 +21,6 @@ class DeleteControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Front\Project\DeleteController::__invoke
-     *
-     * @throws ConnectionException
      */
     public function test_frontProjectDelete_deleteProject(): void
     {

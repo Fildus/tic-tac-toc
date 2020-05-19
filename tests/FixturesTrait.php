@@ -5,23 +5,20 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\Entity\User;
-use Doctrine\DBAL\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 trait FixturesTrait
 {
     private static KernelBrowser $client;
     private static EntityManagerInterface $em;
-    private static Router $router;
+    private static ?Router $router;
 
-    /**
-     * @throws ConnectionException
-     */
     private static function setUpClient(string $role): void
     {
         self::$client = User::IS_AUTHENTICATED_ANONYMOUSLY === $role ?
@@ -40,8 +37,6 @@ trait FixturesTrait
     /**
      * After each test, a rollback reset the state of
      * the database.
-     *
-     * @throws ConnectionException
      */
     protected function tearDown(): void
     {
@@ -57,6 +52,8 @@ trait FixturesTrait
         $roles = [User::ROLE_USER => 'user@user.com', User::ROLE_ADMIN => 'admin@admin.com'];
         $client = WebTestCase::createClient();
         $container = WebTestCase::$kernel->getContainer();
+
+        /** @var Session $session */
         $session = $container->get('session');
         $person = $container->get('doctrine')
             ->getRepository(User::class)

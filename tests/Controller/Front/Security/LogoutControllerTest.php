@@ -6,7 +6,6 @@ namespace App\Tests\Controller\Front\Security;
 
 use App\Entity\User;
 use App\Tests\FixturesTrait;
-use Doctrine\DBAL\ConnectionException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -22,8 +21,6 @@ class LogoutControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Front\Security\LogoutController::__invoke
-     *
-     * @throws ConnectionException
      */
     public function test_logout_isSuccessful(): void
     {

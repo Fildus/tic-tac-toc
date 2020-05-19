@@ -6,7 +6,6 @@ namespace App\Tests\Controller\Front\User;
 
 use App\Entity\User;
 use App\Tests\FixturesTrait;
-use Doctrine\DBAL\ConnectionException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,8 +21,6 @@ class RegistrationControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Front\User\RegistrationController::__invoke
-     *
-     * @throws ConnectionException
      */
     public function test_frontUserRegistration_responseIsSuccessful(): void
     {
@@ -39,8 +36,6 @@ class RegistrationControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Front\User\RegistrationController::__invoke
-     *
-     * @throws ConnectionException
      */
     public function test_frontUserRegistration_responseIsSuccessful_createNew(): void
     {

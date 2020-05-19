@@ -6,7 +6,6 @@ namespace App\Tests\Controller\Back;
 
 use App\Entity\User;
 use App\Tests\FixturesTrait;
-use Doctrine\DBAL\ConnectionException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +21,6 @@ class AdminControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\DashboardController::index
-     *
-     * @throws ConnectionException
      */
     public function test_adminResponse_isSuccessful_withAdmin(): void
     {
@@ -38,8 +35,6 @@ class AdminControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\DashboardController::index
-     *
-     * @throws ConnectionException
      */
     public function test_adminResponse_isFailed_withUser(): void
     {
@@ -54,8 +49,6 @@ class AdminControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\DashboardController::index
-     *
-     * @throws ConnectionException
      */
     public function test_adminResponse_isFailed_withAnonymous(): void
     {

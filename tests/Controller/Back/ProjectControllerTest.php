@@ -8,7 +8,6 @@ use App\Controller\Admin\ProjectCrudController;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Tests\FixturesTrait;
-use Doctrine\DBAL\ConnectionException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,8 +22,6 @@ class ProjectControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::index
-     *
-     * @throws ConnectionException
      */
     public function test_adminProjectIndex_responseIsSuccessful(): void
     {
@@ -42,8 +39,6 @@ class ProjectControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::new
-     *
-     * @throws ConnectionException
      */
     public function test_adminProjectNew_responseIsSuccessful_createNew(): void
     {
@@ -80,8 +75,6 @@ class ProjectControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::edit
-     *
-     * @throws ConnectionException
      */
     public function test_adminProjectEdit_responseIsSuccessful(): void
     {
@@ -106,8 +99,6 @@ class ProjectControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::edit
-     *
-     * @throws ConnectionException
      */
     public function test_adminProjectEdit_responseIsSuccessful_updateContent(): void
     {
@@ -143,8 +134,6 @@ class ProjectControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::edit
-     *
-     * @throws ConnectionException
      */
     public function test_adminProjectEdit_responseIsSuccessful_setUser(): void
     {
@@ -152,6 +141,9 @@ class ProjectControllerTest extends WebTestCase
 
         /** @var Project $project */
         $project = self::$em->getRepository(Project::class)->findOneBy(['user' => null]);
+
+        /** @var User $user */
+        $user = self::$em->getRepository(User::class)->findOneBy([]);
 
         $crawler = self::$client->request(
             Request::METHOD_GET,
@@ -165,7 +157,7 @@ class ProjectControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Sauvegarder les modifications')->form();
         $values = $form->getPhpValues();
-        $values['Project']['user'] = 1;
+        $values['Project']['user'] = $user->getId();
         self::$client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
         self::$client->followRedirect();
         self::assertResponseIsSuccessful();
@@ -177,8 +169,6 @@ class ProjectControllerTest extends WebTestCase
 
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::delete
-     *
-     * @throws ConnectionException
      */
     public function test_adminProjectDelete_responseIsSuccessful_deleteProject(): void
     {
