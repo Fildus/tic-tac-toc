@@ -30,10 +30,10 @@ class ProjectCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $id = IdField::new('id');
-        $title = TextField::new('title');
-        $content = TextareaField::new('content')->setMaxLength(30);
-        $user = AssociationField::new('user');
+        $id = IdField::new('id', 'Identifiant');
+        $title = TextField::new('title', 'Titre');
+        $content = TextareaField::new('content', 'Contenu')->setMaxLength(30);
+        $user = AssociationField::new('user', 'Utilisateur');
 
         if (Action::NEW === $pageName) {
             return [$title, $content, $user];

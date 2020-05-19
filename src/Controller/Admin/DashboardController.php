@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Entity\Category;
 use App\Entity\Project;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -25,6 +27,21 @@ class DashboardController extends AbstractDashboardController
         ]);
     }
 
+    public function configureActions(): Actions
+    {
+        return parent::configureActions()
+            ->update(
+                Action::INDEX,
+                Action::EDIT,
+                fn (Action $action) => $action->setIcon('far fa-edit')->setLabel(false)
+            )
+            ->update(
+                Action::INDEX,
+                Action::DELETE,
+                fn (Action $action) => $action->setIcon('fas fa-trash-alt')->setLabel(false)
+            );
+    }
+
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
@@ -36,6 +53,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-user', User::class);
         yield MenuItem::linkToCrud('Projects', 'fa fa-wallet', Project::class);
+        yield MenuItem::linkToCrud('Categories', 'fas fa-tags', Category::class);
     }
 
     public function configureUserMenu(UserInterface $user): UserMenu

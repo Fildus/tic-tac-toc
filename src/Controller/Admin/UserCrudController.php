@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,11 +39,11 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $id = EmailField::new('id');
-        $email = EmailField::new('email');
-        $password = TextField::new('password');
-        $roles = CollectionField::new('roles');
-        $projects = AssociationField::new('projects')->setFormTypeOptions([
+        $id = IdField::new('id', 'Identifiant');
+        $email = EmailField::new('email', 'Email');
+        $password = TextField::new('password', 'Password');
+        $roles = CollectionField::new('roles', 'Rôles');
+        $projects = AssociationField::new('projects', 'projects')->setFormTypeOptions([
             'by_reference' => false,
             'expanded' => true,
             'multiple' => true,
