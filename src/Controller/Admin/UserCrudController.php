@@ -56,7 +56,7 @@ class UserCrudController extends AbstractCrudController
         }
 
         if (Action::NEW === $pageName) {
-            return [$password, $projects, $email, $roles];
+            return [$email, $password, $roles, $projects];
         }
 
         if (Action::EDIT === $pageName) {
@@ -83,7 +83,13 @@ class UserCrudController extends AbstractCrudController
                 ->setCssClass('btn btn-info')
                 ->displayIf(fn () => !$this->isRouteName('password'))
             )->add(Action::EDIT, Action::new('Édition de l\'utilisateur')
-                ->linkToCrudAction(Action::EDIT)
+                ->linkToRoute('admin', function (User $user) {
+                    return [
+                        'crudAction' => Action::EDIT,
+                        'crudController' => UserCrudController::class,
+                        'entityId' => $user->getId(),
+                    ];
+                })
                 ->setCssClass('btn btn-info')
                 ->displayIf(fn () => $this->isRouteName('password'))
             );
