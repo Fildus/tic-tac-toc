@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests;
+namespace App\Tests\Utils;
 
 use App\Entity\User;
+use App\Tests\FixturesTrait;
 use App\Utils\StringUtils;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
