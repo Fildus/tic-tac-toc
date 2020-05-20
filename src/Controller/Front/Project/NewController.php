@@ -46,7 +46,7 @@ class NewController
         $user = $this->tokenStorage->getToken()->getUser();
 
         if ($h->process(ProjectNewHandler::class, ['user' => $user], $project = new Project())->isValid()) {
-            return new RedirectResponse($this->router->generate('project_index', [
+            return new RedirectResponse($this->router->generate('project_user_index', [
                 'id' => $project->getId(),
             ]));
         }
