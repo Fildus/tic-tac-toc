@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
@@ -16,11 +17,23 @@ class Project
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\Length(
+     *     min="15",
+     *     minMessage="Votre titre doit contenir au minimum {{ limit }} caractères.",
+     *     max="50",
+     *     maxMessage="Votre titre ne doit pas dépasser {{ limit }} caractères."
+     * )
      */
     private string $title = '';
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(
+     *     min="50",
+     *     minMessage="Votre contenu doit contenir au minimum {{ limit }} caractères.",
+     *     max="5000",
+     *     maxMessage="Votre contenu ne doit pas dépasser {{ limit }} caractères."
+     * )
      */
     private string $content = '';
 

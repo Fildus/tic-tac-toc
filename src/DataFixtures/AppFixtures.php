@@ -8,6 +8,7 @@ use App\Entity\Category;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Repository\CategoryRepository;
+use App\Utils\StringUtils;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -29,7 +30,7 @@ class AppFixtures extends Fixture
         $manager->persist($this->createProject());
 
         for ($i = 0; $i < rand(10, 15); ++$i) {
-            $user = $this->createUser($this->faker->email.$i, [User::ROLE_USER]);
+            $user = $this->createUser(StringUtils::stringToLength($this->faker->email.$i, 50), [User::ROLE_USER]);
 
             for ($j = 0; $j < rand(2, 5); ++$j) {
                 $project = $this->createProject();
@@ -59,8 +60,8 @@ class AppFixtures extends Fixture
     {
         $project = new Project();
         $project
-            ->setTitle($this->faker->slug)
-            ->setContent($this->faker->text);
+            ->setTitle(StringUtils::stringToLength($this->faker->slug, 25))
+            ->setContent(StringUtils::stringToLength($this->faker->text, 100));
 
         return $project;
     }
