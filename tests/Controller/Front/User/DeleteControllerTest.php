@@ -21,7 +21,7 @@ class DeleteControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\User\DeleteController::__invoke
      */
-    public function test_frontUserDelete_deleteUser(): void
+    public function test front user delete delete user(): void
     {
         self::setUpClient(User::ROLE_USER);
 

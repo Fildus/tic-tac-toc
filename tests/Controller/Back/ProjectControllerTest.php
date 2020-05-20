@@ -8,6 +8,7 @@ use App\Controller\Admin\ProjectCrudController;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Tests\FixturesTrait;
+use App\Utils\StringUtils;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,7 +24,7 @@ class ProjectControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::index
      */
-    public function test_adminProjectIndex_responseIsSuccessful(): void
+    public function test admin project index response is successful(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
         self::$client->request(
@@ -40,7 +41,7 @@ class ProjectControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::new
      */
-    public function test_adminProjectNew_responseIsSuccessful_createNew(): void
+    public function test admin project new response is successful create new(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 
@@ -60,9 +61,9 @@ class ProjectControllerTest extends WebTestCase
         /** @var User $user */
         $user = self::$em->getRepository(User::class)->findOneBy(['email' => 'user@user.com']);
 
-        $projectTitle = 'new Project title';
+        $projectTitle = StringUtils::stringToLength('new Project title', 15);
         $values['Project']['title'] = $projectTitle;
-        $values['Project']['content'] = 'new Project content';
+        $values['Project']['content'] = StringUtils::stringToLength('new Project content', 75);
         $values['Project']['user'] = $user->getId();
         $form->setValues($values);
         self::$client->submit($form);
@@ -76,7 +77,7 @@ class ProjectControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::edit
      */
-    public function test_adminProjectEdit_responseIsSuccessful(): void
+    public function test admin project edit response is successful(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 
@@ -100,7 +101,7 @@ class ProjectControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::edit
      */
-    public function test_adminProjectEdit_responseIsSuccessful_updateContent(): void
+    public function test admin project edit response is successful update content(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 
@@ -120,7 +121,7 @@ class ProjectControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Sauvegarder les modifications')->form();
         $values = $form->getPhpValues();
-        $content = 'content updated';
+        $content = StringUtils::stringToLength('content updated', 75);
         $values['Project']['content'] = $content;
         $form->setValues($values);
         self::$client->submit($form);
@@ -135,7 +136,7 @@ class ProjectControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::edit
      */
-    public function test_adminProjectEdit_responseIsSuccessful_setUser(): void
+    public function test admin project edit response is successful set user(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 
@@ -170,7 +171,7 @@ class ProjectControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\ProjectCrudController::delete
      */
-    public function test_adminProjectDelete_responseIsSuccessful_deleteProject(): void
+    public function test admin project delete response is successful delete project(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 

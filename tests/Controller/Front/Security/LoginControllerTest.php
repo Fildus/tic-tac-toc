@@ -22,7 +22,7 @@ class LoginControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\Security\LoginController::__invoke
      */
-    public function test_loginResponse(): void
+    public function test login response(): void
     {
         self::setUpClient(User::IS_AUTHENTICATED_ANONYMOUSLY);
 
@@ -41,7 +41,7 @@ class LoginControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\Security\LoginController::__invoke
      */
-    public function test_login_isSuccessful(): void
+    public function test login is successful(): void
     {
         self::setUpClient(User::IS_AUTHENTICATED_ANONYMOUSLY);
         self::$client->followRedirects();
@@ -68,7 +68,7 @@ class LoginControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\Security\LoginController::__invoke
      */
-    public function test_login_isFailed(): void
+    public function test login is failed(): void
     {
         self::setUpClient(User::IS_AUTHENTICATED_ANONYMOUSLY);
 

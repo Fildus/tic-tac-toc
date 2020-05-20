@@ -21,7 +21,7 @@ class IndexControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\Project\IndexController::__invoke
      */
-    public function test_frontProjectIndex_responseIsSuccessful(): void
+    public function test front project index response is successful(): void
     {
         self::setUpClient(User::ROLE_USER);
 

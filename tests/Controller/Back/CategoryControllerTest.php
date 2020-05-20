@@ -23,7 +23,7 @@ class CategoryControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\CategoryCrudController::index
      */
-    public function test_adminCategoryIndex_responseIsSuccessful(): void
+    public function test admin category index response is successful(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
         self::$client->request(
@@ -40,7 +40,7 @@ class CategoryControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\CategoryCrudController::new
      */
-    public function test_adminCategoryNew_responseIsSuccessful_createNew(): void
+    public function test admin category new response is successful create new(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 
@@ -75,7 +75,7 @@ class CategoryControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\CategoryCrudController::delete
      */
-    public function test_adminCategoryDelete_responseIsSuccessful_deleteCategory(): void
+    public function test admin category delete response is successful delete category(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 

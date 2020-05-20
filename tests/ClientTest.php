@@ -15,7 +15,7 @@ class ClientTest extends WebTestCase
 {
     use FixturesTrait;
 
-    public function test_authUser(): void
+    public function test auth user(): void
     {
         self::setUpClient(User::ROLE_USER);
 
@@ -25,7 +25,7 @@ class ClientTest extends WebTestCase
         static::assertTrue(in_array(User::ROLE_USER, $security->getUser()->getRoles(), true));
     }
 
-    public function test_authAdmin(): void
+    public function test auth admin(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 

@@ -21,7 +21,7 @@ class EditControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\User\EditController::__invoke
      */
-    public function test_frontUserEdit_responseIsSuccessful(): void
+    public function test front user edit response is successful(): void
     {
         self::setUpClient(User::ROLE_USER);
 
@@ -40,7 +40,7 @@ class EditControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\User\EditController::__invoke
      */
-    public function test_frontUserEdit_responseIsSuccessful_updateEmail(): void
+    public function test front user edit response is successful update email(): void
     {
         self::setUpClient(User::ROLE_USER);
 
@@ -82,7 +82,7 @@ class EditControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\User\EditController::__invoke
      */
-    public function test_frontUserEdit_responseIsSuccessful_updatePassword(): void
+    public function test front user edit response is successful update password(): void
     {
         $email = 'user@user.com';
 

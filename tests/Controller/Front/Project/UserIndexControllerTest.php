@@ -21,7 +21,7 @@ class UserIndexControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\Project\UserIndexController::__invoke
      */
-    public function test_frontProjectUserIndex_responseIsSuccessful(): void
+    public function test front project user index response is successful(): void
     {
         self::setUpClient(User::ROLE_USER);
 

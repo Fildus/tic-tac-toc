@@ -24,7 +24,7 @@ class UserControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\UserCrudController::index
      */
-    public function test_adminUserIndex_responseIsSuccessful(): void
+    public function test admin user index response is successful(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
         self::$client->request(
@@ -40,7 +40,7 @@ class UserControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\UserCrudController::new
      */
-    public function test_adminUserNew_responseIsSuccessful_createNew(): void
+    public function test admin user new response is successful create new(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 
@@ -70,7 +70,7 @@ class UserControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\UserCrudController::edit
      */
-    public function test_adminUserEdit_responseIsSuccessful(): void
+    public function test admin user edit response is successful(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 
@@ -98,7 +98,7 @@ class UserControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\UserCrudController::edit
      */
-    public function test_adminUserEdit_responseIsSuccessful_updateEmail(): void
+    public function test admin user edit response is successful update email(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 
@@ -133,7 +133,7 @@ class UserControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\UserCrudController::edit
      */
-    public function test_adminUserEdit_responseIsSuccessful_addProjects(): void
+    public function test admin user edit response is successful add projects(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
         /** @var User $user */
@@ -186,7 +186,7 @@ class UserControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\UserCrudController::edit
      */
-    public function test_adminUserEditPassword_responseIsSuccessful_editPassword(): void
+    public function test admin user edit password response is successful edit password(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 
@@ -209,7 +209,7 @@ class UserControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\UserCrudController::edit
      */
-    public function test_adminUserEdit_responseIsSuccessful_updatePassword(): void
+    public function test admin user edit response is successful update password(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 
@@ -248,7 +248,7 @@ class UserControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\UserCrudController::delete
      */
-    public function test_adminUserDelete_responseIsSuccessful_deleteUser(): void
+    public function test admin user delete response is successful delete user(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 

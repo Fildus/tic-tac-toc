@@ -22,7 +22,7 @@ class LogoutControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\Security\LogoutController::__invoke
      */
-    public function test_logout_isSuccessful(): void
+    public function test logout is successful(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
         self::$client->request(Request::METHOD_GET, self::$router->generate('home'));

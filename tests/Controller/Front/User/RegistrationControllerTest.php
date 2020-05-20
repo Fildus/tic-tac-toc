@@ -22,7 +22,7 @@ class RegistrationControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\User\RegistrationController::__invoke
      */
-    public function test_frontUserRegistration_responseIsSuccessful(): void
+    public function test front user registration response is successful(): void
     {
         self::setUpClient(User::IS_AUTHENTICATED_ANONYMOUSLY);
 
@@ -37,7 +37,7 @@ class RegistrationControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\User\RegistrationController::__invoke
      */
-    public function test_frontUserRegistration_responseIsSuccessful_createNew(): void
+    public function test front user registration response is successful create new(): void
     {
         self::setUpClient(User::IS_AUTHENTICATED_ANONYMOUSLY);
 

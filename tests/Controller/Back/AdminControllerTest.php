@@ -22,7 +22,7 @@ class AdminControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\DashboardController::index
      */
-    public function test_adminResponse_isSuccessful_withAdmin(): void
+    public function test admin response is successful with admin(): void
     {
         self::setUpClient(User::ROLE_ADMIN);
 
@@ -36,7 +36,7 @@ class AdminControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\DashboardController::index
      */
-    public function test_adminResponse_isFailed_withUser(): void
+    public function test admin response is failed with user(): void
     {
         self::setUpClient(User::ROLE_USER);
 
@@ -50,7 +50,7 @@ class AdminControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Admin\DashboardController::index
      */
-    public function test_adminResponse_isFailed_withAnonymous(): void
+    public function test admin response is failed with anonymous(): void
     {
         self::setUpClient(User::IS_AUTHENTICATED_ANONYMOUSLY);
 

@@ -7,6 +7,7 @@ namespace App\Tests\Controller\Front\Project;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Tests\FixturesTrait;
+use App\Utils\StringUtils;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,7 +23,7 @@ class EditControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\Project\EditController::__invoke
      */
-    public function test_frontProjectEdit_responseIsSuccessful_update(): void
+    public function test front project edit response is successful update(): void
     {
         self::setUpClient(User::ROLE_USER);
 
@@ -40,8 +41,8 @@ class EditControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        $editedTitle = 'edited title';
-        $editedContent = 'edited content';
+        $editedTitle = StringUtils::stringToLength('edited title', 15);
+        $editedContent = StringUtils::stringToLength('edited content', 75);
         $values['project_edit']['title'] = $editedTitle;
         $values['project_edit']['content'] = $editedContent;
         $values['project_edit']['_token'] = self::$container

@@ -22,7 +22,7 @@ class DeleteControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\Project\DeleteController::__invoke
      */
-    public function test_frontProjectDelete_deleteProject(): void
+    public function test front project delete delete project(): void
     {
         self::setUpClient(User::ROLE_USER);
 

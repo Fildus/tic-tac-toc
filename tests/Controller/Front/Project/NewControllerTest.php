@@ -7,6 +7,7 @@ namespace App\Tests\Controller\Front\Project;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Tests\FixturesTrait;
+use App\Utils\StringUtils;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,7 +23,7 @@ class NewControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\Project\NewController::__invoke
      */
-    public function test_frontProjectNew_responseIsSuccessful_createNew(): void
+    public function test front project new response is successful create new(): void
     {
         self::setUpClient(User::ROLE_USER);
 
@@ -33,8 +34,8 @@ class NewControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        $newTitle = 'new title';
-        $newContent = 'new content';
+        $newTitle = StringUtils::stringToLength('new title', 15);
+        $newContent = StringUtils::stringToLength('new content', 75);
         $values['project_new']['title'] = $newTitle;
         $values['project_new']['content'] = $newContent;
         $values['project_new']['_token'] = self::$container

@@ -22,7 +22,7 @@ class HomeControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\HomeController::__invoke
      */
-    public function test_home_responseIsSuccessful(): void
+    public function test home response is successful(): void
     {
         self::setUpClient(User::IS_AUTHENTICATED_ANONYMOUSLY);
         self::$client->request(Request::METHOD_GET, self::$router->generate('home'));
@@ -32,7 +32,7 @@ class HomeControllerTest extends WebTestCase
     /**
      * @covers \App\Controller\Front\HomeController::__invoke
      */
-    public function test_home_responseIsFailed(): void
+    public function test home response is failed(): void
     {
         self::setUpClient(User::IS_AUTHENTICATED_ANONYMOUSLY);
         self::$client->request('whatever', self::$router->generate('home'));
