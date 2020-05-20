@@ -10,7 +10,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class RolesValidator extends ConstraintValidator
 {
-    private const profiles = [User::ROLE_USER, User::ROLE_ADMIN];
+    private const PROFILES = [User::ROLE_USER, User::ROLE_ADMIN];
 
     public function validate($values, Constraint $constraint): void
     {
@@ -23,7 +23,7 @@ class RolesValidator extends ConstraintValidator
         }
 
         foreach ($values as $value) {
-            if (!in_array($value, self::profiles, true)) {
+            if (!in_array($value, self::PROFILES, true)) {
                 $this->context
                     ->buildViolation($constraint->message)
                     ->setParameter('{{ value }}', $value)
