@@ -13,7 +13,13 @@
     - [x] Mes projects
         - [x] Mise en form
         - [x] Tests
-- [ ] Ajouter un système de catégories
+- [x] Ajouter un système de catégories
+    - [x] Mise en form back
+    - [ ] Mise en form front
+        - [ ] Project +cat
+        - [ ] (Projects, search) +cat
+        - [ ] User +cat
+    - [ ] Tests
 - [ ] Ajouter un système de messagerie
 
 ## À faire plus tard
