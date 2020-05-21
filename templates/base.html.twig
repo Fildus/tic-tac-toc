@@ -13,7 +13,7 @@
 <body>
 <div id="vue-app">
     <Navbar config="{{ appNavbarConfig()|json_encode }}"></Navbar>
-    <div class="container mt-5">{% block body %}{% endblock %}</div>
+    <div class="container mt-5">{% include 'flash_messages.html.twig' %}{% block body %}{% endblock %}</div>
 </div>
 {% block javascripts %}
     {{ encore_entry_script_tags('js/app', null, 'front') }}

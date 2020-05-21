@@ -1,21 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouveau project{% endblock %}
+{% block title %}Nouveau projet{% endblock %}
 
 {% block body %}
-    <h1>Nouveau project</h1>
     {{ form_start(form) }}
     <div class="card shadow">
+        <div class="card-header">
+            <h1 class="card-title">Nouveau projet</h1>
+        </div>
         <div class="card-body">
-            <h5 class="card-title">Je m'inscrit</h5>
             {{ form_widget(form) }}
         </div>
         <div class="card-footer d-flex justify-content-between">
             <div class="d-flex">
-                <a class="align-self-center btn btn-sm btn-outline-dark" href="{{ path('project_user_index') }}">⇐ back to list</a>
+                <a class="align-self-center" href="{{ path('project_user_index') }}">⇐ Retour à la liste</a>
             </div>
             <div class="text-right">
-                <button class="btn btn-outline-success">Créer mon project</button>
+                <button class="btn btn-success">Créer mon projet!</button>
             </div>
         </div>
     </div>

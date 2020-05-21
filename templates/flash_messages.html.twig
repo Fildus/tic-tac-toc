@@ -1,0 +1,23 @@
+{% for label, messages in app.flashes() %}
+    {% for message in messages %}
+        <div class="alert alert-{{ label }} alert-dismissible fade show shadow" role="alert">
+            {% if message is not iterable %}
+                <p>{{ message | raw }}</p>
+            {% else %}
+                {% if message.header is defined %}
+                    <h4 class="alert-heading">{{ message.header | raw }}</h4>
+                {% endif %}
+                {% if message.body is defined %}
+                    <p>{{ message.body | raw }}</p>
+                {% endif %}
+                <hr>
+                {% if message.footer is defined %}
+                    <p class="mb-0">{{ message.footer | raw }}</p>
+                {% endif %}
+            {% endif %}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+{% endfor %}
