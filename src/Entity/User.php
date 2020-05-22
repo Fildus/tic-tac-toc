@@ -48,9 +48,15 @@ class User implements UserInterface
      */
     private Collection $projects;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="users")
+     */
+    private Collection $categories;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -155,6 +161,32 @@ class User implements UserInterface
             if ($project->getUser() === $this) {
                 $project->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
         }
 
         return $this;
