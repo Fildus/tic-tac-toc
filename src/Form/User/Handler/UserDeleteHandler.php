@@ -22,6 +22,6 @@ class UserDeleteHandler extends AbstractDeleteBuilder
     public function onSuccess(object $entity, array $options = []): void
     {
         $this->tokenStorage->setToken(null);
-        $this->flashBag->add('notice', 'Votre compte a bien été supprimé');
+        $this->flashBag->add('success', 'Votre compte a bien été supprimé');
     }
 }
