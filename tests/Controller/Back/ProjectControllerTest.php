@@ -95,7 +95,6 @@ class ProjectControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         static::assertStringContainsString((string) $project->getTitle(), (string) self::$client->getResponse()->getContent());
-        static::assertStringContainsString(StringUtils::stringToLength($project->getContent(), 20), (string) self::$client->getResponse()->getContent());
     }
 
     /**
