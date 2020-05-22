@@ -5,16 +5,19 @@
            @click="showMenu = !showMenu"
            @mouseover="showMenu = true"
            :href="main.href !== 'undefined' ? main.href : ''"
-           class="text-decoration-none"
-           :class="showMenu ? 'text-white' : 'text-white-50'">{{main.html}}</a>
+           class="text-decoration-none text-dark text-black-50"
+           :class="showMenu ? 'text-shadow-lg' : ''">{{main.html}}</a>
 
         <transition name="fade">
             <div v-show="showMenu"
-                 class="bg-white position-absolute rounded shadow-sm"
+                 class="bg-white position-absolute bg-transparent"
                  :class="getDropdownDir()">
-                <a v-for="s in subLinks"
-                   class="dropdown-item bg-transparent app-link"
-                   :href="s.href">{{ s.html }}</a>
+                <div class="p-1 bg-transparent"></div>
+                <div class="bg-white border rounded shadow-lg">
+                    <a v-for="s in subLinks"
+                       class="dropdown-item text-black-50 app-link"
+                       :href="s.href">{{ s.html }}</a>
+                </div>
             </div>
         </transition>
     </li>
@@ -46,7 +49,7 @@
 
 <style lang="scss" scoped>
     .fade-enter-active, .fade-leave-active {
-        transition: opacity .2s;
+        transition: opacity 0.5s;
     }
 
     .fade-enter, .fade-leave-to {
@@ -54,6 +57,7 @@
     }
 
     .app-link:hover {
-        background: transparentize(#343a40, 0.8) !important;
+        color: #171717 !important;
+        background: whitesmoke !important;
     }
 </style>

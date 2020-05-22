@@ -35,7 +35,7 @@ trait Common
 
     public function getCreatedAt(): ?\DateTime
     {
-        return $this->updatedAt;
+        return $this->createdAt;
     }
 
     public function getUpdatedAt(): ?\DateTime
@@ -60,6 +60,8 @@ trait Common
     public function update(): void
     {
         $this->updatedAt = new \DateTime();
-        $this->createdAt = new \DateTime();
+        if (null === $this->createdAt) {
+            $this->createdAt = new \DateTime();
+        }
     }
 }

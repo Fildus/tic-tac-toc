@@ -1,29 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Project index{% endblock %}
+{% block title %}Mes projets{% endblock %}
+{% block page_title %}Mes projets{% endblock %}
 
 {% block body %}
-    <h1>Mes projects</h1>
+    {#    {% for project in projects %}#}
+    {#        <div class="card mt-3 mb-3 shadow">#}
+    {#            <div class="card-header">#}
+    {#                <h2 class="card-title">{{ project.title }}</h2>#}
+    {#            </div>#}
+    {#            <div class="card-body">#}
+    {#                <p>{{ project.content }}</p>#}
+    {#            </div>#}
+    {#            <div class="card-footer d-flex justify-content-between">#}
+    {#                <div>#}
+    {#                    <small class="card-text">utilisateur: {{ project.user.username ?? 'null' }}</small>#}
+    {#                    <small class="card-text">créé le {{ project.createdAt | date }}</small>#}
+    {#                    {% if project.createdAt != project.updatedAt %}#}
+    {#                        <small class="card-text">Modifié le {{ project.updatedAt | date }}</small>#}
+    {#                    {% endif %}#}
+    {#                </div>#}
+    {#                <div>#}
+    {#                    <a href="#">messages</a>#}
+    {#                    <a href="{{ path('project_edit', {'id': project.id}) }}">modifier</a>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    {% endfor %}#}
 
     {% for project in projects %}
-        <div class="card mt-3 mb-3 shadow">
-            <div class="card-header">
-                <h2 class="card-title">{{ project.title }}</h2>
-            </div>
+        <div class="app-card-index-projet">
             <div class="card-body">
-                <p>{{ project.content }}</p>
+                <h5 class="card-title">{{ project.title }}</h5>
+                <div class="card-subtitle mb-3">
+                    <p class="card-text text-black-50">
+                        {% if project.user.username is defined %}
+                            <small> <i class="far fa-user"></i> {{ project.user.username }}</small>
+                        {% endif %}
+                        {% if project.updatedAt is defined %}
+                            <small>|</small>
+                            <small><i class="far fa-calendar-plus"></i> {{ project.createdAt | date }}</small>
+                        {% endif %}
+                    </p>
+                </div>
+                <p class="card-text">{{ project.content }}</p>
             </div>
             <div class="card-footer d-flex justify-content-between">
                 <div>
-                    <small class="card-text">utilisateur: {{ project.user.username ?? 'null' }}</small>
-                    <small class="card-text">créé le {{ project.createdAt | date }}</small>
-                    {% if project.createdAt != project.updatedAt %}
-                        <small class="card-text">Modifié le {{ project.updatedAt | date }}</small>
-                    {% endif %}
+                    {% include 'front/parts/_delete_form.html.twig' with {"entity_path": 'project_delete', "entity": project} %}
                 </div>
-                <div>
-                    <a href="#">messages</a>
-                    <a href="{{ path('project_edit', {'id': project.id}) }}">modifier</a>
+                <div class="text-right">
+                    <a href="{{ path('project_edit', {'id': project.id}) }}"
+                       title="{{ project.updatedAt == project.createdAt ? 'Créé le' : 'Modifié le' }} {{ project.createdAt | date }}">Éditer</a>
                 </div>
             </div>
         </div>

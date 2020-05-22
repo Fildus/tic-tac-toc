@@ -24,10 +24,13 @@ class AppFixtures extends Fixture
 
         $this->createCategories($manager);
 
-        $manager->persist($this->createUser('user@user.com', [User::ROLE_USER]));
-        $manager->persist($this->createUser('admin@admin.com', [User::ROLE_ADMIN]));
+        $simpleUser = $this->createUser('user@user.com', [User::ROLE_USER]);
+        $simpleUser->addProject($this->createProject());
+        $manager->persist($simpleUser);
 
-        $manager->persist($this->createProject());
+        $adminUser = $this->createUser('admin@admin.com', [User::ROLE_ADMIN]);
+        $adminUser->addProject($this->createProject());
+        $manager->persist($adminUser);
 
         for ($i = 0; $i < rand(10, 15); ++$i) {
             $user = $this->createUser(StringUtils::stringToLength($this->faker->email.$i, 50), [User::ROLE_USER]);
@@ -61,7 +64,7 @@ class AppFixtures extends Fixture
         $project = new Project();
         $project
             ->setTitle(StringUtils::stringToLength($this->faker->slug, 25))
-            ->setContent(StringUtils::stringToLength($this->faker->text, 100));
+            ->setContent(StringUtils::stringToLength($this->faker->realText(400), 400));
 
         return $project;
     }

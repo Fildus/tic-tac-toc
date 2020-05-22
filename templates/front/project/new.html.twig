@@ -2,23 +2,16 @@
 
 {% block title %}Nouveau projet{% endblock %}
 
+{% block page_title %}Mon nouveau projet{% endblock %}
+
 {% block body %}
-    {{ form_start(form) }}
     <div class="card shadow">
-        <div class="card-header">
-            <h1 class="card-title">Nouveau projet</h1>
-        </div>
         <div class="card-body">
-            {{ form_widget(form) }}
+            {% include 'front/parts/_form.html.twig' with {"form": form, "btn": "Créer mon projet!" } %}
         </div>
         <div class="card-footer d-flex justify-content-between">
-            <div class="d-flex">
-                <a class="align-self-center" href="{{ path('project_user_index') }}">⇐ Retour à la liste</a>
-            </div>
-            <div class="text-right">
-                <button class="btn btn-success">Créer mon projet!</button>
-            </div>
+            <a class="align-self-center" href="{{ path('project_user_index') }}">
+                <i class="fas fa-chevron-left"></i> mes projects</a>
         </div>
     </div>
-    {{ form_end(form) }}
 {% endblock %}

@@ -95,7 +95,7 @@ class ProjectControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         static::assertStringContainsString((string) $project->getTitle(), (string) self::$client->getResponse()->getContent());
-        static::assertStringContainsString((string) $project->getContent(), (string) self::$client->getResponse()->getContent());
+        static::assertStringContainsString(StringUtils::stringToLength($project->getContent(), 20), (string) self::$client->getResponse()->getContent());
     }
 
     /**
@@ -140,11 +140,11 @@ class ProjectControllerTest extends WebTestCase
     {
         self::setUpClient(User::ROLE_ADMIN);
 
-        /** @var Project $project */
-        $project = self::$em->getRepository(Project::class)->findOneBy(['user' => null]);
-
         /** @var User $user */
         $user = self::$em->getRepository(User::class)->findOneBy([]);
+
+        /** @var Project $project */
+        $project = self::$em->getRepository(Project::class)->findOneBy([]);
 
         $crawler = self::$client->request(
             Request::METHOD_GET,

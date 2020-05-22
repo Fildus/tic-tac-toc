@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Project\Handler;
 
+use App\Entity\Project;
 use App\Infrastructure\DeleteHandler\AbstractDeleteBuilder;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
@@ -23,6 +24,10 @@ class ProjectDeleteHandler extends AbstractDeleteBuilder
 
     public function onSuccess(object $entity, array $options = []): void
     {
-        $this->flashBag->add('notice', 'Le project a bien été supprimé');
+        if (!$entity instanceof Project) {
+            return;
+        }
+
+        $this->flashBag->add('success', 'Le project <strong>'.$entity->getTitle().'</strong> a bien été supprimé');
     }
 }

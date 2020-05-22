@@ -1,22 +1,24 @@
 <template>
-    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
-        <a :href="parsedConfig.home.href" class="navbar-brand">{{ parsedConfig.home.html }}</a>
-        <button @click="toggle = !toggle" class="navbar-toggler" type="button">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <div class="bg-light">
+        <nav class="navbar sticky-top navbar-expand-lg navbar-light container">
+            <a :href="parsedConfig.home.href" class="navbar-brand">{{ parsedConfig.home.html }}</a>
+            <button @click="toggle = !toggle" class="navbar-toggler" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div v-show="toggle" class="navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <DropdownNavbar :main="parsedConfig.dropdown.projects.main"
-                                :sub-links="parsedConfig.dropdown.projects.subLinks"/>
-            </ul>
-            <ul class="navbar-nav">
-                <DropdownNavbar :main="parsedConfig.dropdown.connection.main"
-                                :subLinks="parsedConfig.dropdown.connection.subLinks"
-                                dropdown-dir="rigth"/>
-            </ul>
-        </div>
-    </nav>
+            <div v-show="toggle" class="navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <DropdownNavbar :main="parsedConfig.dropdown.projects.main"
+                                    :sub-links="parsedConfig.dropdown.projects.subLinks"/>
+                </ul>
+                <ul class="navbar-nav">
+                    <DropdownNavbar :main="parsedConfig.dropdown.connection.main"
+                                    :subLinks="parsedConfig.dropdown.connection.subLinks"
+                                    dropdown-dir="rigth"/>
+                </ul>
+            </div>
+        </nav>
+    </div>
 </template>
 
 <script>
