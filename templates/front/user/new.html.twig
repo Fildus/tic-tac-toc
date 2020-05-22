@@ -1,21 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block title %}Inscription{% endblock %}
+{% block page_title %}Je m'inscrit{% endblock %}
 
+{% block body %}
     <div class="card shadow">
         <div class="card-body">
-            <h5 class="card-title">Je m'inscrit</h5>
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <div class="text-right">
-                <button class="btn btn-outline-success">Créer un compte !</button>
+                <button class="btn btn-success">Créer un compte !</button>
             </div>
             {{ form_end(form) }}
-        </div>
-        <div class="card-footer">
-            <div class="alert alert-info m-0" role="alert">
-                <small class="card-text"> Vous recevrez un mail de confirmation sur votre boite mail. </small>
-            </div>
         </div>
     </div>
 {% endblock %}

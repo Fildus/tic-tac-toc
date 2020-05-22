@@ -69,7 +69,7 @@ class AppExtension extends AbstractExtension
             $user = $this->tokenStorage->getToken()->getUser();
             $config['dropdown']['connection']['subLinks'][] = [
                 'href' => $this->generator->generate('front_user_edit', ['id' => $user->getId()]),
-                'html' => 'Gérer mon compte',
+                'html' => 'Mon compte',
             ];
             $config['dropdown']['connection']['subLinks'][] = [
                 'href' => $this->generator->generate('app_logout'),

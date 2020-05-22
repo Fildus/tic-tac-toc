@@ -1,46 +1,48 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Mon compte{% endblock %}
+{% block page_title %}Mon compte{% endblock %}
+
 {% block body %}
-    <my-account
-        card-title="Mon compte"
-        :list="[
-            ['editTab', 'editForm'],
-            ['passwordTab', 'passwordForm'],
-            ['deleteAccountTab', 'deleteAccountForm']]">
-
-        <template slot="editTab" slot-scope="ddd">Éditer</template>
-        <template slot="editForm">
-            {{ form_start(formEditAccount) }}
-            {{ form_widget(formEditAccount) }}
-            <div class="text-right">
-                <input class="btn btn-primary" type="submit" value="save">
+    <div class="row">
+        <div class="col-4">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active" id="list-email-list" data-toggle="list"
+                   href="#list-email" role="tab" aria-controls="email">Email</a>
+                <a class="list-group-item list-group-item-action" id="list-password-list" data-toggle="list"
+                   href="#list-password" role="tab" aria-controls="password">Password</a>
+                <a class="list-group-item list-group-item-action" id="list-delete_account-list" data-toggle="list"
+                   href="#list-delete_account" role="tab" aria-controls="delete_account">Supprimer mon compte</a>
             </div>
-            {{ form_end(formEditAccount) }}
-        </template>
-
-        <template slot="passwordTab">Modifier mon mot de passe</template>
-        <template slot="passwordForm">
-            {{ form_start(formUpdatePassword) }}
-            {{ form_widget(formUpdatePassword) }}
-            <div class="text-right">
-                <input class="btn btn-primary" type="submit" value="save">
-            </div>
-            {{ form_end(formUpdatePassword) }}
-        </template>
-
-        <template slot="deleteAccountTab">Supprimer mon compte</template>
-        <template slot="deleteAccountForm">
-            <form name="delete_user"
-                  class="h-100"
-                  method="post"
-                  action="{{ path('front_user_delete', {'id': user.id}) }}"
-                  onsubmit="return confirm('Êtes-vous sûre de vouloir supprimer votre compte?');">
-                <input type="hidden" name="_method" value="DELETE">
-                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-                <div class="d-flex align-items-end justify-content-center h-100">
-                    <button class="btn btn-danger">Supprimer le compte</button>
+        </div>
+        <div class="col-8">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-email" role="tabpanel" aria-labelledby="list-email-list">
+                    <div class="card p-3">
+                        {{ form_start(formEditAccount) }}
+                        {{ form_widget(formEditAccount) }}
+                        <div class="text-right">
+                            <input class="btn btn-primary" type="submit" value="Sauvegarder">
+                        </div>
+                        {{ form_end(formEditAccount) }}
+                    </div>
                 </div>
-            </form>
-        </template>
-    </my-account>
+                <div class="tab-pane fade" id="list-password" role="tabpanel" aria-labelledby="list-password-list">
+                    <div class="card p-3">
+                        {{ form_start(formUpdatePassword) }}
+                        {{ form_widget(formUpdatePassword) }}
+                        <div class="text-right">
+                            <input class="btn btn-primary" type="submit" value="save">
+                        </div>
+                        {{ form_end(formUpdatePassword) }}
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="list-delete_account" role="tabpanel" aria-labelledby="list-delete_account-list">
+                    <div class="card p-3 text-center">
+                        {% include 'front/parts/_delete_form.html.twig' with {"entity_path":"front_user_delete", "entity":user} %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

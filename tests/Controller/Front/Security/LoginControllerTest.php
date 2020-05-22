@@ -52,7 +52,7 @@ class LoginControllerTest extends WebTestCase
         );
         self::assertResponseIsSuccessful();
 
-        $form = $crawler->selectButton('Sign in')->form();
+        $form = $crawler->selectButton('Me connecter')->form();
         $values = $form->getPhpValues();
         $values['email'] = 'admin@admin.com';
         $values['password'] = 'test';
@@ -75,7 +75,7 @@ class LoginControllerTest extends WebTestCase
         $crawler = self::$client->request(Request::METHOD_GET, self::$router->generate('app_login'));
         self::assertResponseIsSuccessful();
 
-        $form = $crawler->selectButton('Sign in')->form();
+        $form = $crawler->selectButton('Me connecter')->form();
         $values = $form->getPhpValues();
         $values['email'] = 'something@something.com';
         $values['password'] = 'test';
