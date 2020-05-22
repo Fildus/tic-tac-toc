@@ -61,9 +61,21 @@ class Category
      */
     private Collection $children;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="categories")
+     */
+    private Collection $projects;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="categories")
+     */
+    private Collection $users;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->projects = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function setTitle(string $title): self
@@ -121,6 +133,62 @@ class Category
     public function getChildren(): Collection
     {
         return $this->children;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): self
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
+            $project->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): self
+    {
+        if ($this->projects->contains($project)) {
+            $this->projects->removeElement($project);
+            $project->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            $user->removeCategory($this);
+        }
+
+        return $this;
     }
 
     public function __toString()
