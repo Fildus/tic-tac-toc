@@ -1,7 +1,7 @@
 <template>
     <div class="bg-light">
         <nav class="navbar sticky-top navbar-expand-lg navbar-light container">
-            <a :href="parsedConfig.home.href" class="navbar-brand">{{ parsedConfig.home.html }}</a>
+            <a :href="parsedConfig.home.href" class="navbar-brand mr-5">{{ parsedConfig.home.html }}</a>
             <button @click="toggle = !toggle" class="navbar-toggler" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
