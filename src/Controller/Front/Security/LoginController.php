@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Front\Security;
 
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -23,12 +25,18 @@ class LoginController
     private Environment $twig;
     private TokenStorageInterface $tokenStorage;
     private RouterInterface $router;
+    private FlashBagInterface $flashBag;
 
-    public function __construct(Environment $twig, TokenStorageInterface $tokenStorage, RouterInterface $router)
-    {
+    public function __construct(
+        Environment $twig,
+        TokenStorageInterface $tokenStorage,
+        RouterInterface $router,
+        FlashBagInterface $flashBag
+    ) {
         $this->twig = $twig;
         $this->tokenStorage = $tokenStorage;
         $this->router = $router;
+        $this->flashBag = $flashBag;
     }
 
     /**
@@ -41,6 +49,13 @@ class LoginController
         $token = $this->tokenStorage->getToken();
 
         if (is_object($user = $token->getUser())) {
+            if ($user instanceof User) {
+                $this->flashBag->add('success', [
+                    'header' => '<strong>'.$user->getUsername().'</strong>',
+                    'body' => 'vous êtes maintenant connecté',
+                ]);
+            }
+
             return new RedirectResponse($this->router->generate('home'));
         }
 
