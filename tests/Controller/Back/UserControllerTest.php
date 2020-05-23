@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Controller\Back;
 
 use App\Controller\Admin\UserCrudController;
+use App\Entity\Category;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Tests\FixturesTrait;
@@ -181,6 +182,75 @@ class UserControllerTest extends WebTestCase
         }
 
         static::assertSame($projectsIdAsArray, $projectsIdsAfter);
+    }
+
+    /**
+     * @covers \App\Controller\Admin\CategoryCrudController::edit
+     */
+    public function test admin user edit response is successful add and remove category(): void
+    {
+        self::setUpClient(User::ROLE_ADMIN);
+
+        /** @var User $user */
+        $user = self::$em->getRepository(User::class)->findOneBy([]);
+        /** @var Category $category */
+        $category = self::$em->getRepository(Category::class)->findOneBy([]);
+
+        /**
+         * Add a Category and check.
+         */
+        $crawler = self::$client->request(
+            Request::METHOD_GET,
+            self::$router->generate('admin', [
+                'crudAction' => 'edit',
+                'crudController' => UserCrudController::class,
+                'entityId' => $category->getId(),
+            ])
+        );
+        self::assertResponseIsSuccessful();
+
+        $form = $crawler->selectButton('Sauvegarder les modifications')->form();
+        $values = $form->getPhpValues();
+        $values['User']['categories'][] = $category->getId();
+        $form->setValues($values);
+        self::$client->submit($form);
+        self::$client->followRedirect();
+        self::assertResponseIsSuccessful();
+
+        /** @var User $newUser */
+        $newUser = self::$em->getRepository(User::class)->findOneBy(['id' => $user->getId()]);
+        /** @var Category $newCategory */
+        $newCategory = self::$em->getRepository(Category::class)->findOneBy(['id' => $category->getId()]);
+        static::assertTrue($newUser->getCategories()->contains($newCategory));
+
+        /**
+         * Remove a Category and check.
+         */
+        $crawler = self::$client->request(
+            Request::METHOD_GET,
+            self::$router->generate('admin', [
+                'crudAction' => 'edit',
+                'crudController' => UserCrudController::class,
+                'entityId' => $category->getId(),
+            ])
+        );
+        self::assertResponseIsSuccessful();
+
+        $form = $crawler->selectButton('Sauvegarder les modifications')->form();
+        $values = $form->getPhpValues();
+        foreach ($values['User']['categories'] as $k => $v) {
+            $values['User']['categories'][$k] = false;
+        }
+        $form->setValues($values);
+        self::$client->submit($form);
+        self::$client->followRedirect();
+        self::assertResponseIsSuccessful();
+
+        /** @var Category $newCategory */
+        $newCategory = self::$em->getRepository(Category::class)->findOneBy(['id' => $category->getId()]);
+        /** @var User $newUser */
+        $newUser = self::$em->getRepository(User::class)->findOneBy(['id' => $user->getId()]);
+        static::assertFalse($newUser->getCategories()->contains($newCategory));
     }
 
     /**

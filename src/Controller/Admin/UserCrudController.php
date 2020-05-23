@@ -43,7 +43,12 @@ class UserCrudController extends AbstractCrudController
         $email = EmailField::new('email', 'Email');
         $password = TextField::new('password', 'Password');
         $roles = CollectionField::new('roles', 'Rôles');
-        $projects = AssociationField::new('projects', 'projects')->setFormTypeOptions([
+        $projects = AssociationField::new('projects', 'Projects')->setFormTypeOptions([
+            'by_reference' => false,
+            'expanded' => true,
+            'multiple' => true,
+        ]);
+        $categories = AssociationField::new('categories', 'Categories')->setFormTypeOptions([
             'by_reference' => false,
             'expanded' => true,
             'multiple' => true,
@@ -52,24 +57,22 @@ class UserCrudController extends AbstractCrudController
         $updatedAt = DateTimeField::new('updatedAt');
 
         if ($this->isCrudAction('password')) {
-            return [$password];
+            return compact('password');
         }
 
         if (Action::NEW === $pageName) {
-            return [$email, $password, $roles, $projects];
+            return compact('email', 'password', 'roles', 'projects', 'categories');
         }
 
         if (Action::EDIT === $pageName) {
-            return [
-                $email,
-                $roles->setFormTypeOption('attr', [
-                    'data-autocomplete-url' => $this->generateUrl('user_autocomplete_roles'),
-                ]),
-                $projects,
-            ];
+            $roles->setFormTypeOption('attr', [
+                'data-autocomplete-url' => $this->generateUrl('user_autocomplete_roles'),
+            ]);
+
+            return compact('email', 'roles', 'projects', 'categories');
         }
 
-        return [$id, $email, $roles, $projects, $createdAt, $updatedAt];
+        return compact('id', 'email', 'roles', 'projects', 'categories', 'createdAt', 'updatedAt');
     }
 
     public function configureActions(Actions $actions): Actions

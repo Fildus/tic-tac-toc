@@ -74,7 +74,7 @@ class CategoryControllerTest extends WebTestCase
     }
 
     /**
-     * @covers \App\Controller\Admin\CategoryCrudController::new
+     * @covers \App\Controller\Admin\CategoryCrudController::edit
      */
     public function test admin category edit response is successful add and remove project(): void
     {
@@ -141,6 +141,75 @@ class CategoryControllerTest extends WebTestCase
         /** @var Category $newCategory */
         $newCategory = self::$em->getRepository(Category::class)->findOneBy(['id' => $category->getId()]);
         static::assertFalse($newCategory->getProjects()->contains($newProject));
+    }
+
+    /**
+     * @covers \App\Controller\Admin\CategoryCrudController::edit
+     */
+    public function test admin category edit response is successful add and remove user(): void
+    {
+        self::setUpClient(User::ROLE_ADMIN);
+
+        /** @var Category $category */
+        $category = self::$em->getRepository(Category::class)->findOneBy([]);
+        /** @var User $user */
+        $user = self::$em->getRepository(User::class)->findOneBy([]);
+
+        /**
+         * Add a User and check.
+         */
+        $crawler = self::$client->request(
+            Request::METHOD_GET,
+            self::$router->generate('admin', [
+                'crudAction' => 'edit',
+                'crudController' => CategoryCrudController::class,
+                'entityId' => $category->getId(),
+            ])
+        );
+        self::assertResponseIsSuccessful();
+
+        $form = $crawler->selectButton('Sauvegarder les modifications')->form();
+        $values = $form->getPhpValues();
+        $values['Category']['users'][] = $user->getId();
+        $form->setValues($values);
+        self::$client->submit($form);
+        self::$client->followRedirect();
+        self::assertResponseIsSuccessful();
+
+        /** @var Category $newCategory */
+        $newCategory = self::$em->getRepository(Category::class)->findOneBy(['id' => $category->getId()]);
+        /** @var User $newUser */
+        $newUser = self::$em->getRepository(User::class)->findOneBy(['id' => $user->getId()]);
+        static::assertTrue($newCategory->getUsers()->contains($newUser));
+
+        /**
+         * Remove a User and check.
+         */
+        $crawler = self::$client->request(
+            Request::METHOD_GET,
+            self::$router->generate('admin', [
+                'crudAction' => 'edit',
+                'crudController' => CategoryCrudController::class,
+                'entityId' => $category->getId(),
+            ])
+        );
+        self::assertResponseIsSuccessful();
+
+        $form = $crawler->selectButton('Sauvegarder les modifications')->form();
+        $values = $form->getPhpValues();
+        foreach ($values['Category']['users'] as $k => $v) {
+            $values['Category']['users'][$k] = false;
+        }
+        $form->setValues($values);
+        self::$client->submit($form);
+        self::$client->followRedirect();
+        self::assertResponseIsSuccessful();
+
+        /** @var User $newUser */
+        $newUser = self::$em->getRepository(User::class)->findOneBy(['id' => $user->getId()]);
+        /** @var Category $newCategory */
+        $newCategory = self::$em->getRepository(Category::class)->findOneBy(['id' => $category->getId()]);
+        static::assertFalse($newCategory->getProjects()->contains($newUser));
     }
 
     /**

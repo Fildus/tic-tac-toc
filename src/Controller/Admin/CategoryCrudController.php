@@ -74,7 +74,12 @@ class CategoryCrudController extends AbstractCrudController
             'expanded' => true,
             'multiple' => true,
         ]);
-        $projects = AssociationField::new('projects', 'projets')->setFormTypeOptions([
+        $users = AssociationField::new('users', 'Users')->setFormTypeOptions([
+            'by_reference' => false,
+            'expanded' => true,
+            'multiple' => true,
+        ]);
+        $projects = AssociationField::new('projects', 'Projets')->setFormTypeOptions([
             'by_reference' => false,
             'expanded' => true,
             'multiple' => true,
@@ -83,18 +88,18 @@ class CategoryCrudController extends AbstractCrudController
         $updatedAt = DateTimeField::new('updatedAt', 'Date de modification');
 
         if (Action::NEW === $pageName) {
-            return compact('title', 'parent', 'children', 'projects');
+            return compact('title', 'parent', 'children', 'users', 'projects');
         }
 
         if (Action::EDIT === $pageName) {
-            return compact('title', 'parent', 'children', 'projects');
+            return compact('title', 'parent', 'children', 'users', 'projects');
         }
 
         if (Action::DETAIL === $pageName) {
-            return compact('id', 'title', 'parent', 'children', 'projects', 'createdAt', 'updatedAt');
+            return compact('id', 'title', 'parent', 'children', 'users', 'projects', 'createdAt', 'updatedAt');
         }
 
-        return compact('id', 'title', 'parent', 'children', 'projects', 'createdAt', 'updatedAt');
+        return compact('id', 'title', 'parent', 'children', 'users', 'projects', 'createdAt', 'updatedAt');
     }
 
     public function configureActions(Actions $actions): Actions
