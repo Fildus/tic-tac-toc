@@ -1,7 +1,3 @@
-{% set flashes = {"message": [
-
-]} %}
-
 {% for label, messages in app.flashes() %}
     {% for message in messages %}
         <div class="alert alert-{{ label }} alert-dismissible fade show shadow" role="alert">
