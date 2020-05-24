@@ -23,6 +23,7 @@ class AppFixtures extends Fixture
         $this->faker = Factory::create();
 
         $this->createCategories($manager);
+        $manager->flush();
 
         $simpleUser = $this->createUser('user@user.com', [User::ROLE_USER]);
         $simpleUser->addProject($this->createProject());
@@ -32,12 +33,19 @@ class AppFixtures extends Fixture
         $adminUser->addProject($this->createProject());
         $manager->persist($adminUser);
 
+        $categories = $manager->getRepository(Category::class)->findAll();
+
         for ($i = 0; $i < rand(10, 15); ++$i) {
             $user = $this->createUser(StringUtils::stringToLength($this->faker->email.$i, 50), [User::ROLE_USER]);
+            $user->addCategory($categories[array_rand($categories)]);
 
             for ($j = 0; $j < rand(2, 5); ++$j) {
                 $project = $this->createProject();
                 $project->setUser($user);
+
+                for ($k = 0; $k < rand(0, 3); ++$k) {
+                    $project->addCategory($categories[array_rand($categories)]);
+                }
 
                 $manager->persist($project);
             }

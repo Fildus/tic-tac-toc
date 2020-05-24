@@ -101,7 +101,7 @@ class CategoryControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Sauvegarder les modifications')->form();
         $values = $form->getPhpValues();
-        $values['Category']['projects'][] = $project->getId();
+        $values['Category']['projects'][$project->getId() - 1] = $project->getId();
         $form->setValues($values);
         self::$client->submit($form);
         self::$client->followRedirect();
@@ -170,7 +170,7 @@ class CategoryControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Sauvegarder les modifications')->form();
         $values = $form->getPhpValues();
-        $values['Category']['users'][] = $user->getId();
+        $values['Category']['users'][$user->getId() - 1] = $user->getId();
         $form->setValues($values);
         self::$client->submit($form);
         self::$client->followRedirect();
