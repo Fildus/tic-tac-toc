@@ -25,34 +25,32 @@ use Twig\Error\SyntaxError;
  */
 class NewController
 {
-    private Environment $twig;
-    private RouterInterface $router;
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(Environment $twig, RouterInterface $router, TokenStorageInterface $tokenStorage)
-    {
-        $this->twig = $twig;
-        $this->router = $router;
-        $this->tokenStorage = $tokenStorage;
-    }
+    /** @required */
+    public Environment $twig;
+    /** @required */
+    public RouterInterface $router;
+    /** @required */
+    public TokenStorageInterface $tokenStorage;
+    /** @required */
+    public FormHandlerInterface $handler;
 
     /**
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function __invoke(FormHandlerInterface $h, Request $request): Response
+    public function __invoke(Request $request): Response
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
-        if ($h->process(ProjectNewHandler::class, ['user' => $user], $project = new Project())->isValid()) {
+        if ($this->handler->process(ProjectNewHandler::class, ['user' => $user], $project = new Project())->isValid()) {
             return new RedirectResponse($this->router->generate('project_user_index', [
                 'id' => $project->getId(),
             ]));
         }
 
         return new Response($this->twig->render('front/project/new.html.twig', [
-            'form' => $h->getView(),
+            'form' => $this->handler->getView(),
         ]));
     }
 }

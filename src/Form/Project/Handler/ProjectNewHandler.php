@@ -12,14 +12,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 class ProjectNewHandler extends AbstractFormBuilder
 {
-    private FlashBagInterface $flashBag;
-    private RouterInterface $router;
-
-    public function __construct(FlashBagInterface $flashBag, RouterInterface $router)
-    {
-        $this->flashBag = $flashBag;
-        $this->router = $router;
-    }
+    /** @required */
+    public FlashBagInterface $flashBag;
+    /** @required */
+    public RouterInterface $router;
 
     public function build(object $entity, array $options = []): array
     {

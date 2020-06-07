@@ -10,12 +10,8 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 class ProjectDeleteHandler extends AbstractDeleteBuilder
 {
-    private FlashBagInterface $flashBag;
-
-    public function __construct(FlashBagInterface $flashBag)
-    {
-        $this->flashBag = $flashBag;
-    }
+    /** @required */
+    public FlashBagInterface $flashBag;
 
     public function build(object $entity, array $options = []): array
     {

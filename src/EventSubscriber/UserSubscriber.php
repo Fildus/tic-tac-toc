@@ -11,12 +11,8 @@ use Symfony\Component\Form\FormEvent;
 
 class UserSubscriber implements EventSubscriberInterface
 {
-    private EncodePassword $encodePassword;
-
-    public function __construct(EncodePassword $encodePassword)
-    {
-        $this->encodePassword = $encodePassword;
-    }
+    /** @required */
+    public EncodePassword $encodePassword;
 
     public function postSubmit(FormEvent $event): void
     {

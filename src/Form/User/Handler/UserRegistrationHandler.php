@@ -11,12 +11,8 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 class UserRegistrationHandler extends AbstractFormBuilder
 {
-    private FlashBagInterface $flashBag;
-
-    public function __construct(FlashBagInterface $flashBag)
-    {
-        $this->flashBag = $flashBag;
-    }
+    /** @required */
+    public FlashBagInterface $flashBag;
 
     public function entityName(): string
     {

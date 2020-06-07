@@ -16,14 +16,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class FormHandler implements FormHandlerInterface
 {
-    private ContainerInterface $container;
+    /** @required */
+    public ContainerInterface $container;
     private FormInterface $form;
     private object $entity;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
 
     /**
      * @return $this

@@ -22,22 +22,14 @@ use Twig\Error\SyntaxError;
  */
 class LoginController
 {
-    private Environment $twig;
-    private TokenStorageInterface $tokenStorage;
-    private RouterInterface $router;
-    private FlashBagInterface $flashBag;
-
-    public function __construct(
-        Environment $twig,
-        TokenStorageInterface $tokenStorage,
-        RouterInterface $router,
-        FlashBagInterface $flashBag
-    ) {
-        $this->twig = $twig;
-        $this->tokenStorage = $tokenStorage;
-        $this->router = $router;
-        $this->flashBag = $flashBag;
-    }
+    /** @required */
+    public Environment $twig;
+    /** @required */
+    public TokenStorageInterface $tokenStorage;
+    /** @required */
+    public RouterInterface $router;
+    /** @required */
+    public FlashBagInterface $flashBag;
 
     /**
      * @throws LoaderError

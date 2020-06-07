@@ -12,12 +12,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditEmailAccountType extends AbstractType
 {
-    private UserSubscriber $subscriber;
-
-    public function __construct(UserSubscriber $subscriber)
-    {
-        $this->subscriber = $subscriber;
-    }
+    /** @required */
+    public UserSubscriber $subscriber;
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

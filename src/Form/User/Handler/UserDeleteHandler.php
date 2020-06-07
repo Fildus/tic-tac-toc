@@ -10,14 +10,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class UserDeleteHandler extends AbstractDeleteBuilder
 {
-    private FlashBagInterface $flashBag;
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(FlashBagInterface $flashBag, TokenStorageInterface $tokenStorage)
-    {
-        $this->flashBag = $flashBag;
-        $this->tokenStorage = $tokenStorage;
-    }
+    /** @required */
+    public FlashBagInterface $flashBag;
+    /** @required */
+    public TokenStorageInterface $tokenStorage;
 
     public function onSuccess(object $entity, array $options = []): void
     {

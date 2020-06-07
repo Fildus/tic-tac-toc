@@ -9,12 +9,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class EncodePassword
 {
-    private UserPasswordEncoderInterface $encoder;
-
-    public function __construct(UserPasswordEncoderInterface $encoder)
-    {
-        $this->encoder = $encoder;
-    }
+    /** @required */
+    public UserPasswordEncoderInterface $encoder;
 
     public function encode(object $entity): void
     {

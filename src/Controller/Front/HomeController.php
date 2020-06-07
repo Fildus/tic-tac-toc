@@ -16,12 +16,8 @@ use Twig\Error\SyntaxError;
  */
 class HomeController
 {
-    private Environment $twig;
-
-    public function __construct(Environment $twig)
-    {
-        $this->twig = $twig;
-    }
+    /** @required */
+    public Environment $twig;
 
     /**
      * @throws LoaderError

@@ -14,14 +14,10 @@ use Symfony\Component\Routing\RouterInterface;
 
 class EditProfilAccountType extends AbstractType
 {
-    private UserSubscriber $subscriber;
-    private RouterInterface $router;
-
-    public function __construct(UserSubscriber $subscriber, RouterInterface $router)
-    {
-        $this->subscriber = $subscriber;
-        $this->router = $router;
-    }
+    /** @required */
+    public UserSubscriber $subscriber;
+    /** @required */
+    public RouterInterface $router;
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

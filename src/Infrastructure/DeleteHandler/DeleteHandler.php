@@ -14,13 +14,9 @@ use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 class DeleteHandler implements DeleteHandlerInterface
 {
-    private ContainerInterface $container;
+    /** @required */
+    public ContainerInterface $container;
     private bool $isValid = false;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
 
     /**
      * @return $this

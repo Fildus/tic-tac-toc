@@ -23,23 +23,21 @@ use Twig\Error\SyntaxError;
  */
 class EditController
 {
-    private Environment $twig;
-    private RouterInterface $router;
-
-    public function __construct(Environment $twig, RouterInterface $router)
-    {
-        $this->twig = $twig;
-        $this->router = $router;
-    }
+    /** @required */
+    public Environment $twig;
+    /** @required */
+    public RouterInterface $router;
+    /** @required */
+    public FormHandlerInterface $handler;
 
     /**
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function __invoke(Project $project, FormHandlerInterface $h): Response
+    public function __invoke(Project $project): Response
     {
-        if ($h->process(ProjectEditHandler::class, [], $project)->isValid()) {
+        if ($this->handler->process(ProjectEditHandler::class, [], $project)->isValid()) {
             return new RedirectResponse($this->router->generate('project_edit', [
                 'id' => $project->getId(),
             ]));
@@ -47,7 +45,7 @@ class EditController
 
         return new Response($this->twig->render('front/project/edit.html.twig', [
             'project' => $project,
-            'form' => $h->getView(),
+            'form' => $this->handler->getView(),
         ]));
     }
 }

@@ -20,29 +20,27 @@ use Twig\Error\SyntaxError;
  */
 class RegistrationController
 {
-    private Environment $twig;
-    private RouterInterface $router;
-
-    public function __construct(Environment $twig, RouterInterface $router)
-    {
-        $this->twig = $twig;
-        $this->router = $router;
-    }
+    /** @required  */
+    public Environment $twig;
+    /** @required  */
+    public RouterInterface $router;
+    /** @required  */
+    public FormHandlerInterface $handler;
 
     /**
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function __invoke(FormHandlerInterface $h): Response
+    public function __invoke(): Response
     {
-        if ($h->process(UserRegistrationHandler::class)->isValid()) {
+        if ($this->handler->process(UserRegistrationHandler::class)->isValid()) {
             return new RedirectResponse($this->router->generate('app_login'));
         }
 
         return new Response($this->twig->render('front/user/new.html.twig', [
-            'user' => $h->getEntity(),
-            'form' => $h->getView(),
+            'user' => $this->handler->getEntity(),
+            'form' => $this->handler->getView(),
         ]));
     }
 }

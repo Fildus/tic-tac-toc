@@ -24,12 +24,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class CategoryCrudController extends AbstractCrudController
 {
-    private CategoryRepository $categoryRepository;
-
-    public function __construct(CategoryRepository $categoryRepository)
-    {
-        $this->categoryRepository = $categoryRepository;
-    }
+    /** @required */
+    public CategoryRepository $categoryRepository;
 
     public static function getEntityFqcn(): string
     {

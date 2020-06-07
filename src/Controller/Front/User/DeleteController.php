@@ -18,16 +18,14 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class DeleteController
 {
-    private RouterInterface $router;
+    /** @required */
+    public RouterInterface $router;
+    /** @required */
+    public DeleteHandlerInterface $handler;
 
-    public function __construct(RouterInterface $router)
+    public function __invoke(User $user): RedirectResponse
     {
-        $this->router = $router;
-    }
-
-    public function __invoke(DeleteHandlerInterface $h, User $user): RedirectResponse
-    {
-        if ($h->process($user, UserDeleteHandler::class)->isValid()) {
+        if ($this->handler->process($user, UserDeleteHandler::class)->isValid()) {
             return new RedirectResponse($this->router->generate('app_logout'));
         }
 

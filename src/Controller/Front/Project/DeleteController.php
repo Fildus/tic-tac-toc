@@ -18,16 +18,14 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class DeleteController
 {
-    private RouterInterface $router;
+    /** @required */
+    public RouterInterface $router;
+    /** @required */
+    public DeleteHandlerInterface $handler;
 
-    public function __construct(RouterInterface $router)
+    public function __invoke(Project $project): RedirectResponse
     {
-        $this->router = $router;
-    }
-
-    public function __invoke(DeleteHandlerInterface $h, Project $project): RedirectResponse
-    {
-        if ($h->process($project, ProjectDeleteHandler::class)->isValid()) {
+        if ($this->handler->process($project, ProjectDeleteHandler::class)->isValid()) {
             return new RedirectResponse($this->router->generate('project_user_index'));
         }
 

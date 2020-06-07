@@ -14,23 +14,14 @@ use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
-    private RequestStack $requestStack;
-    private UrlGeneratorInterface $generator;
-    private AuthorizationCheckerInterface $authorizationChecker;
-
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(
-        RequestStack $requestStack,
-        UrlGeneratorInterface $generator,
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage
-    ) {
-        $this->requestStack = $requestStack;
-        $this->generator = $generator;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
-    }
+    /** @required */
+    public RequestStack $requestStack;
+    /** @required */
+    public UrlGeneratorInterface $generator;
+    /** @required */
+    public AuthorizationCheckerInterface $authorizationChecker;
+    /** @required */
+    public TokenStorageInterface $tokenStorage;
 
     public function getFunctions(): array
     {

@@ -23,31 +23,29 @@ use Twig\Error\SyntaxError;
  */
 class EditController
 {
-    private Environment $twig;
-    private RouterInterface $router;
-
-    public function __construct(Environment $twig, RouterInterface $router)
-    {
-        $this->twig = $twig;
-        $this->router = $router;
-    }
+    /** @required */
+    public Environment $twig;
+    /** @required */
+    public RouterInterface $router;
+    /** @required */
+    public FormHandlerInterface $handler;
 
     /**
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function __invoke(FormHandlerInterface $h, User $user): Response
+    public function __invoke(User $user): Response
     {
-        if (($editProfileHandler = clone $h)->process(UserEditProfilHandler::class, [], $user)->isValid()) {
+        if (($editProfileHandler = clone $this->handler)->process(UserEditProfilHandler::class, [], $user)->isValid()) {
             return $this->redirectToUserEdit($user);
         }
 
-        if (($editEmailHandler = clone $h)->process(UserEditEmailHandler::class, [], $user)->isValid()) {
+        if (($editEmailHandler = clone $this->handler)->process(UserEditEmailHandler::class, [], $user)->isValid()) {
             return $this->redirectToUserEdit($user);
         }
 
-        if (($passwordHandler = clone $h)->process(UserUpdatePasswordHandler::class, [], $user)->isValid()) {
+        if (($passwordHandler = clone $this->handler)->process(UserUpdatePasswordHandler::class, [], $user)->isValid()) {
             return $this->redirectToUserEdit($user);
         }
 
