@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Controller\Front\User;
 
 use App\Entity\User;
-use App\Form\User\Handler\UserEditAccountHandler;
+use App\Form\User\Handler\UserEditEmailHandler;
+use App\Form\User\Handler\UserEditProfilHandler;
 use App\Form\User\Handler\UserUpdatePasswordHandler;
 use App\Infrastructure\FormHandler\FormHandlerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -38,22 +39,30 @@ class EditController
      */
     public function __invoke(FormHandlerInterface $h, User $user): Response
     {
-        if (($editHandler = clone $h)->process(UserEditAccountHandler::class, [], $user)->isValid()) {
-            return new RedirectResponse($this->router->generate('front_user_edit', [
-                'id' => $user->getId(),
-            ]));
+        if (($editProfileHandler = clone $h)->process(UserEditProfilHandler::class, [], $user)->isValid()) {
+            return $this->redirectToUserEdit($user);
+        }
+
+        if (($editEmailHandler = clone $h)->process(UserEditEmailHandler::class, [], $user)->isValid()) {
+            return $this->redirectToUserEdit($user);
         }
 
         if (($passwordHandler = clone $h)->process(UserUpdatePasswordHandler::class, [], $user)->isValid()) {
-            return new RedirectResponse($this->router->generate('front_user_edit', [
-                'id' => $user->getId(),
-            ]));
+            return $this->redirectToUserEdit($user);
         }
 
         return new Response($this->twig->render('front/user/edit.html.twig', [
             'user' => $user,
-            'formEditAccount' => $editHandler->getView(),
+            'formEditProfilAccount' => $editProfileHandler->getView(),
+            'formEditEmailAccount' => $editEmailHandler->getView(),
             'formUpdatePassword' => $passwordHandler->getView(),
+        ]));
+    }
+
+    private function redirectToUserEdit(User $user): Response
+    {
+        return new RedirectResponse($this->router->generate('front_user_edit', [
+            'id' => $user->getId(),
         ]));
     }
 }

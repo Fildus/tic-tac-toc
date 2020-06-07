@@ -7,24 +7,46 @@
     <div class="row">
         <div class="col-4">
             <div class="list-group" id="list-tab" role="tablist">
-                <a class="list-group-item list-group-item-action active" id="list-email-list" data-toggle="list"
-                   href="#list-email" role="tab" aria-controls="email">Email</a>
+                <a class="list-group-item list-group-item-action active" id="list-details-list" data-toggle="list"
+                   href="#list-details" role="tab" aria-controls="details">
+                    <i class="far fa-id-card mr-3"></i>Votre profil
+                </a>
+                <a class="list-group-item list-group-item-action" id="list-email-list" data-toggle="list"
+                   href="#list-email" role="tab" aria-controls="email">
+                    <i class="far fa-envelope mr-3"></i>Email
+                </a>
                 <a class="list-group-item list-group-item-action" id="list-password-list" data-toggle="list"
-                   href="#list-password" role="tab" aria-controls="password">Password</a>
+                   href="#list-password" role="tab" aria-controls="password">
+                    <i class="fas fa-key mr-3"></i>Password
+                </a>
                 <a class="list-group-item list-group-item-action" id="list-delete_account-list" data-toggle="list"
-                   href="#list-delete_account" role="tab" aria-controls="delete_account">Supprimer mon compte</a>
+                   href="#list-delete_account" role="tab" aria-controls="delete_account">
+                    <i class="far fa-trash-alt mr-3"></i>Supprimer mon compte
+                </a>
             </div>
         </div>
         <div class="col-8">
             <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="list-email" role="tabpanel" aria-labelledby="list-email-list">
+                <div class="tab-pane fade show active" id="list-details" role="tabpanel"
+                     aria-labelledby="list-details-list">
                     <div class="card p-3">
-                        {{ form_start(formEditAccount) }}
-                        {{ form_widget(formEditAccount) }}
+                        {{ form_start(formEditProfilAccount) }}
+                        {{ form_widget(formEditProfilAccount) }}
                         <div class="text-right">
-                            <input class="btn btn-primary" type="submit" value="Sauvegarder">
+                            <input class="btn btn-outline-success" type="submit" value="Sauvegarder">
                         </div>
-                        {{ form_end(formEditAccount) }}
+                        {{ form_end(formEditProfilAccount) }}
+                    </div>
+                </div>
+                <div class="tab-pane fade show" id="list-email" role="tabpanel"
+                     aria-labelledby="list-email-list">
+                    <div class="card p-3">
+                        {{ form_start(formEditEmailAccount) }}
+                        {{ form_widget(formEditEmailAccount) }}
+                        <div class="text-right">
+                            <input class="btn btn-outline-success" type="submit" value="Sauvegarder">
+                        </div>
+                        {{ form_end(formEditEmailAccount) }}
                     </div>
                 </div>
                 <div class="tab-pane fade" id="list-password" role="tabpanel" aria-labelledby="list-password-list">
@@ -32,12 +54,13 @@
                         {{ form_start(formUpdatePassword) }}
                         {{ form_widget(formUpdatePassword) }}
                         <div class="text-right">
-                            <input class="btn btn-primary" type="submit" value="save">
+                            <input class="btn btn-outline-success" type="submit" value="save">
                         </div>
                         {{ form_end(formUpdatePassword) }}
                     </div>
                 </div>
-                <div class="tab-pane fade" id="list-delete_account" role="tabpanel" aria-labelledby="list-delete_account-list">
+                <div class="tab-pane fade" id="list-delete_account" role="tabpanel"
+                     aria-labelledby="list-delete_account-list">
                     <div class="card p-3 text-center">
                         {% include 'front/parts/_delete_form.html.twig' with {"entity_path":"front_user_delete", "entity":user} %}
                     </div>

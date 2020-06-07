@@ -8,7 +8,6 @@ use App\Repository\ProjectRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -21,16 +20,10 @@ use Twig\Error\SyntaxError;
  */
 class UserIndexController
 {
-    private Environment $twig;
-    private RouterInterface $router;
-    private TokenStorageInterface $tokenStorage;
-
-    public function __construct(Environment $twig, RouterInterface $router, TokenStorageInterface $tokenStorage)
-    {
-        $this->twig = $twig;
-        $this->router = $router;
-        $this->tokenStorage = $tokenStorage;
-    }
+    /** @required */
+    public Environment $twig;
+    /** @required */
+    public TokenStorageInterface $tokenStorage;
 
     /**
      * @throws LoaderError

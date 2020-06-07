@@ -18,7 +18,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 /**
- * @Route("/projects{id}/edit", name="project_edit", methods={"GET","POST"})
+ * @Route("/projects/{id}/edit", name="project_edit", methods={"GET","POST"})
  * @IsGranted("ROLE_USER")
  */
 class EditController

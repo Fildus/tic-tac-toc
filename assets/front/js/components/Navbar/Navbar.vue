@@ -22,7 +22,7 @@
 </template>
 
 <script>
-    import DropdownNavbar from "@front/components/DropdownNavbar";
+    import DropdownNavbar from "@front/components/Navbar/DropdownNavbar";
 
     export default {
         props: ['config'],

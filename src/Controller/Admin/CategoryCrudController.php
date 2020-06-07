@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
+use App\Utils\StringUtils;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -51,12 +52,12 @@ class CategoryCrudController extends AbstractCrudController
         if (null !== $parent) {
             $crud->setHelp(Action::INDEX, '<a href="'.$this->generateUrl('admin', [
                     'crudAction' => Action::INDEX,
-                    'crudController' => CategoryCrudController::class,
+                    'crudId' => StringUtils::getControlllerId(CategoryCrudController::class),
                     '__parentId' => $parent->getParent() ? $parent->getParent()->getId() : null,
                 ]).'">⇐ parent</a>');
             $crud->setHelp(Action::EDIT, '<a href="'.$this->generateUrl('admin', [
                     'crudAction' => Action::EDIT,
-                    'crudController' => CategoryCrudController::class,
+                    'crudId' => StringUtils::getControlllerId(CategoryCrudController::class),
                     '__parentId' => $parent->getParent() ? $parent->getParent()->getId() : null,
                 ]).'">⇐ parent</a>');
         }
@@ -108,7 +109,7 @@ class CategoryCrudController extends AbstractCrudController
             ->linkToRoute('admin', function (Category $entity) {
                 return [
                     'crudAction' => Action::INDEX,
-                    'crudController' => CategoryCrudController::class,
+                    'crudId' => StringUtils::getControlllerId(CategoryCrudController::class),
                     '__parentId' => $entity->getId(),
                 ];
             })

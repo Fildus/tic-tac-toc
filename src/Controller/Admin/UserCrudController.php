@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Utils\StringUtils;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -89,7 +90,7 @@ class UserCrudController extends AbstractCrudController
                 ->linkToRoute('admin', function (User $user) {
                     return [
                         'crudAction' => Action::EDIT,
-                        'crudController' => UserCrudController::class,
+                        'crudId' => StringUtils::getControlllerId(UserCrudController::class),
                         'entityId' => $user->getId(),
                     ];
                 })

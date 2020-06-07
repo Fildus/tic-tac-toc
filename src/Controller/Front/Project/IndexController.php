@@ -7,7 +7,6 @@ namespace App\Controller\Front\Project;
 use App\Repository\ProjectRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -18,14 +17,8 @@ use Twig\Error\SyntaxError;
  */
 class IndexController
 {
-    private Environment $twig;
-    private RouterInterface $router;
-
-    public function __construct(Environment $twig, RouterInterface $router)
-    {
-        $this->twig = $twig;
-        $this->router = $router;
-    }
+    /** @required */
+    public Environment $twig;
 
     /**
      * @throws LoaderError

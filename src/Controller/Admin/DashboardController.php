@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\Entity\Category;
 use App\Entity\Project;
 use App\Entity\User;
+use App\Utils\StringUtils;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -22,7 +23,7 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         return $this->redirectToRoute('admin', [
-            'crudController' => UserCrudController::class,
+            'crudId' => StringUtils::getControlllerId(UserCrudController::class),
             'crudAction' => Action::INDEX,
         ]);
     }
@@ -61,7 +62,7 @@ class DashboardController extends AbstractDashboardController
         $userMenu = parent::configureUserMenu($user);
         $userMenu
             ->setMenuItems([
-                MenuItem::linkToLogout('user.sign_out', 'fa-sign-out')->setTranslationDomain('EasyAdminBundle'),
+//                MenuItem::linkToLogout('user.sign_out', 'fa-sign-out')->setTranslationDomain('EasyAdminBundle'),
                 MenuItem::linktoRoute('homepage', 'fas fa-home', 'home'),
             ]);
 

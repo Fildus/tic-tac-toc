@@ -10,7 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EditAccountType extends AbstractType
+class EditEmailAccountType extends AbstractType
 {
     private UserSubscriber $subscriber;
 

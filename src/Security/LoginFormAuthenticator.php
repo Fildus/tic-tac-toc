@@ -27,18 +27,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 {
     use TargetPathTrait;
 
-    private EntityManagerInterface $entityManager;
-    private UrlGeneratorInterface $urlGenerator;
-    private CsrfTokenManagerInterface $csrfTokenManager;
-    private UserPasswordEncoderInterface $passwordEncoder;
-
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $this->entityManager = $entityManager;
-        $this->urlGenerator = $urlGenerator;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->passwordEncoder = $passwordEncoder;
-    }
+    /** @required */
+    public EntityManagerInterface $entityManager;
+    /** @required */
+    public UrlGeneratorInterface $urlGenerator;
+    /** @required */
+    public CsrfTokenManagerInterface $csrfTokenManager;
+    /** @required */
+    public UserPasswordEncoderInterface $passwordEncoder;
 
     public function supports(Request $request)
     {

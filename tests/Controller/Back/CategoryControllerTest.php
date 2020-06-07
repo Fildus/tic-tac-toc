@@ -9,6 +9,7 @@ use App\Entity\Category;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Tests\FixturesTrait;
+use App\Utils\StringUtils;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -31,7 +32,7 @@ class CategoryControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'index',
-                'crudController' => CategoryCrudController::class,
+                'crudId' => StringUtils::getControlllerId(CategoryCrudController::class),
             ])
         );
 
@@ -49,7 +50,7 @@ class CategoryControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'new',
-                'crudController' => CategoryCrudController::class,
+                'crudId' => StringUtils::getControlllerId(CategoryCrudController::class),
             ])
         );
 
@@ -93,7 +94,7 @@ class CategoryControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => CategoryCrudController::class,
+                'crudId' => StringUtils::getControlllerId(CategoryCrudController::class),
                 'entityId' => $category->getId(),
             ])
         );
@@ -120,7 +121,7 @@ class CategoryControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => CategoryCrudController::class,
+                'crudId' => StringUtils::getControlllerId(CategoryCrudController::class),
                 'entityId' => $category->getId(),
             ])
         );
@@ -162,7 +163,7 @@ class CategoryControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => CategoryCrudController::class,
+                'crudId' => StringUtils::getControlllerId(CategoryCrudController::class),
                 'entityId' => $category->getId(),
             ])
         );
@@ -189,7 +190,7 @@ class CategoryControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => CategoryCrudController::class,
+                'crudId' => StringUtils::getControlllerId(CategoryCrudController::class),
                 'entityId' => $category->getId(),
             ])
         );
@@ -226,12 +227,13 @@ class CategoryControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'index',
-                'crudController' => CategoryCrudController::class,
+                'crudId' => StringUtils::getControlllerId(CategoryCrudController::class),
             ])
         );
 
-        $form = $crawler->filter('#main form')->form();
+        $form = $crawler->filter('#main #delete-form')->form();
         $values = $form->getValues();
+
         self::$client->request(
             $form->getMethod(),
             str_replace('__entityId_placeholder__', (string) $category->getId(), (string) $form->getUri()),

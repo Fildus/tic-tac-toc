@@ -9,6 +9,7 @@ use App\Entity\Category;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Tests\FixturesTrait;
+use App\Utils\StringUtils;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +33,7 @@ class UserControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'index',
-                'crudController' => UserCrudController::class,
+                'crudId' => StringUtils::getControlllerId(UserCrudController::class),
             ])
         );
         self::assertResponseIsSuccessful();
@@ -49,7 +50,7 @@ class UserControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'new',
-                'crudController' => UserCrudController::class,
+                'crudId' => StringUtils::getControlllerId(UserCrudController::class),
             ])
         );
         self::assertResponseIsSuccessful();
@@ -82,7 +83,7 @@ class UserControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => UserCrudController::class,
+                'crudId' => StringUtils::getControlllerId(UserCrudController::class),
                 'entityId' => $user->getId(),
             ])
         );
@@ -110,7 +111,7 @@ class UserControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => UserCrudController::class,
+                'crudId' => StringUtils::getControlllerId(UserCrudController::class),
                 'entityId' => $user->getId(),
             ])
         );
@@ -144,7 +145,7 @@ class UserControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => UserCrudController::class,
+                'crudId' => StringUtils::getControlllerId(UserCrudController::class),
                 'entityId' => $user->getId(),
             ])
         );
@@ -203,7 +204,7 @@ class UserControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => UserCrudController::class,
+                'crudId' => StringUtils::getControlllerId(UserCrudController::class),
                 'entityId' => $category->getId(),
             ])
         );
@@ -230,7 +231,7 @@ class UserControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => UserCrudController::class,
+                'crudId' => StringUtils::getControlllerId(UserCrudController::class),
                 'entityId' => $category->getId(),
             ])
         );
@@ -267,7 +268,7 @@ class UserControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => UserCrudController::class,
+                'crudId' => StringUtils::getControlllerId(UserCrudController::class),
                 'route_name' => 'password',
                 'entityId' => $user->getId(),
             ])
@@ -291,7 +292,7 @@ class UserControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => UserCrudController::class,
+                'crudId' => StringUtils::getControlllerId(UserCrudController::class),
                 'entityId' => $user->getId(),
                 'route_name' => 'password',
             ])
@@ -330,11 +331,11 @@ class UserControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'index',
-                'crudController' => UserCrudController::class,
+                'crudId' => StringUtils::getControlllerId(UserCrudController::class),
             ])
         );
 
-        $form = $crawler->filter('#main form')->form();
+        $form = $crawler->filter('#main #delete-form')->form();
         $values = $form->getValues();
         self::$client->request(
             $form->getMethod(),

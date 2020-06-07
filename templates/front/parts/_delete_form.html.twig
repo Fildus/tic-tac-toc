@@ -3,5 +3,7 @@
       onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément?');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ entity.id) }}">
-    <button class="btn btn-sm btn-outline-danger">Supprimer</button>
+    <button class="btn btn-sm btn-outline-danger">
+        <i class="far fa-trash-alt mr-3"></i>Supprimer
+    </button>
 </form>

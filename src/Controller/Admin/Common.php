@@ -52,7 +52,7 @@ trait Common
 
         return $this->redirectToRoute('admin', [
             'crudAction' => $actionName,
-            'crudController' => $parameterBag->get('crudController'),
+            'crudId' => $parameterBag->get('crudId'),
             'route_name' => $parameterBag->get('crudAction'),
             'entityId' => $entity->getId(),
         ]);

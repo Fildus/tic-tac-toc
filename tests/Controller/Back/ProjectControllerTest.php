@@ -32,7 +32,7 @@ class ProjectControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'index',
-                'crudController' => ProjectCrudController::class,
+                'crudId' => StringUtils::getControlllerId(ProjectCrudController::class),
             ])
         );
 
@@ -50,7 +50,7 @@ class ProjectControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'new',
-                'crudController' => ProjectCrudController::class,
+                'crudId' => StringUtils::getControlllerId(ProjectCrudController::class),
             ])
         );
 
@@ -89,7 +89,7 @@ class ProjectControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => ProjectCrudController::class,
+                'crudId' => StringUtils::getControlllerId(ProjectCrudController::class),
                 'entityId' => $project->getId(),
             ])
         );
@@ -112,7 +112,7 @@ class ProjectControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => ProjectCrudController::class,
+                'crudId' => StringUtils::getControlllerId(ProjectCrudController::class),
                 'entityId' => $project->getId(),
             ])
         );
@@ -150,7 +150,7 @@ class ProjectControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => ProjectCrudController::class,
+                'crudId' => StringUtils::getControlllerId(ProjectCrudController::class),
                 'entityId' => $project->getId(),
             ])
         );
@@ -187,7 +187,7 @@ class ProjectControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => ProjectCrudController::class,
+                'crudId' => StringUtils::getControlllerId(ProjectCrudController::class),
                 'entityId' => $project->getId(),
             ])
         );
@@ -214,7 +214,7 @@ class ProjectControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'edit',
-                'crudController' => ProjectCrudController::class,
+                'crudId' => StringUtils::getControlllerId(ProjectCrudController::class),
                 'entityId' => $project->getId(),
             ])
         );
@@ -251,11 +251,11 @@ class ProjectControllerTest extends WebTestCase
             Request::METHOD_GET,
             self::$router->generate('admin', [
                 'crudAction' => 'index',
-                'crudController' => ProjectCrudController::class,
+                'crudId' => StringUtils::getControlllerId(ProjectCrudController::class),
             ])
         );
 
-        $form = $crawler->filter('#main form')->form();
+        $form = $crawler->filter('#main #delete-form')->form();
         $values = $form->getValues();
         self::$client->request(
             $form->getMethod(),

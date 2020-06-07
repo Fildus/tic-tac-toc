@@ -57,10 +57,10 @@ class EditControllerTest extends WebTestCase
         self::assertResponseIsSuccessful();
 
         $email = 'user@user.somethingNew';
-        $values['edit_account']['email'] = $email;
-        $values['edit_account']['_token'] = self::$container
+        $values['edit_email_account']['email'] = $email;
+        $values['edit_email_account']['_token'] = self::$container
             ->get('security.csrf.token_manager')
-            ->getToken('edit_account')
+            ->getToken('edit_email_account')
             ->getValue();
 
         self::$client->request(
