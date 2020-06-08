@@ -11,6 +11,7 @@ parameters:
   excludes_analyse:
     - src/Migrations/*
     - src/Controller/Admin/DashboardController.php
+    - src/Repository/CategoryRepository.php
   checkMissingIterableValueType: false
   checkGenericClassInNonGenericObjectType: false
   ignoreErrors:
