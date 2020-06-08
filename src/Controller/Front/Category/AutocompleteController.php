@@ -21,7 +21,7 @@ class AutocompleteController
     public function __invoke(Request $request, CategoryRepository $categoryRepository): Response
     {
         /** @var Category[] $categories */
-        $categories = $categoryRepository->matchByTitle($request->get('title', null));
+        $categories = $categoryRepository->matchByTitle($request->get('title', ''));
 
         $formatedCategories = [];
 

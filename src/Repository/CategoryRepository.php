@@ -6,7 +6,6 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
 class CategoryRepository extends NestedTreeRepository
@@ -16,7 +15,7 @@ class CategoryRepository extends NestedTreeRepository
         parent::__construct($em, $em->getClassMetadata(Category::class));
     }
 
-    public function matchByTitle(string $title): QueryBuilder
+    public function matchByTitle(string $title): array
     {
         return $this->createQueryBuilder('category')
             ->where("category.title LIKE '%{$title}%'")
