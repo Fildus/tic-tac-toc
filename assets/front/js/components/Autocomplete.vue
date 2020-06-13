@@ -12,7 +12,7 @@
 
         <div class="p-2 mt-2" v-show="showCard">
             <input type="text" class="form-control" @keypress="searchByTitle">
-<!--@input="searchByTitle"  -->
+
             <ul class="list-unstyled" v-if="results.length > 0">
                 <li v-for="result in results"
                     class="badge m-1 mt-2 mb-2"

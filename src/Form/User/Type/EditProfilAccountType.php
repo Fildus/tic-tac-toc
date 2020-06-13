@@ -7,6 +7,7 @@ namespace App\Form\User\Type;
 use App\Entity\Category;
 use App\Entity\User;
 use App\EventSubscriber\UserSubscriber;
+use App\Form\DataTransformer\CategoryToCollectionTransfomer;
 use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
@@ -25,7 +26,7 @@ class EditProfilAccountType extends AbstractType
     /** @required */
     public UserRepository $userRepository;
     /** @required */
-    public CategoryRepository $categoryRepository;
+    public CategoryToCollectionTransfomer $categoryToCollectionTransfomer;
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -33,7 +34,7 @@ class EditProfilAccountType extends AbstractType
             ->add('categories', TextType::class, [
                 'attr' => [
                     'autocomplete_url' => $this->router->generate('category_autocomplete'),
-                    'label' => 'Categories (autocomplete)',
+                    'label' => 'Categories',
                 ],
                 'label' => false,
                 'block_prefix' => 'autocomplete',
@@ -41,26 +42,7 @@ class EditProfilAccountType extends AbstractType
 
         $builder
             ->get('categories')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($tagsAsArray) {
-                    return implode(',', array_map(function (Category $categoryEntity) {
-                        return $categoryEntity->getTitle();
-                    }, $tagsAsArray->toArray()));
-                },
-                function ($tagsAsString) {
-                    if (null !== $tagsAsString) {
-                        $categories = array_map(function (string $categoryTitle) {
-                            return $this->categoryRepository->findOneBy(['title' => $categoryTitle]) ?? null;
-                        }, explode(',', $tagsAsString));
-
-                        $categories = array_filter($categories, function ($category) {
-                            return null !== $category;
-                        });
-                    }
-
-                    return $categories ?? [];
-                }
-            ));
+            ->addModelTransformer($this->categoryToCollectionTransfomer);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
