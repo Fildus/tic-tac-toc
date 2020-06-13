@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Form\User\Type;
 
+use App\Entity\Category;
 use App\Entity\User;
 use App\EventSubscriber\UserSubscriber;
+use App\Repository\CategoryRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,6 +22,10 @@ class EditProfilAccountType extends AbstractType
     public UserSubscriber $subscriber;
     /** @required */
     public RouterInterface $router;
+    /** @required */
+    public UserRepository $userRepository;
+    /** @required */
+    public CategoryRepository $categoryRepository;
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -30,7 +38,29 @@ class EditProfilAccountType extends AbstractType
                 'label' => false,
                 'block_prefix' => 'autocomplete',
             ]);
-//        ->addEventSubscriber($this->subscriber);
+
+        $builder
+            ->get('categories')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($tagsAsArray) {
+                    return implode(',', array_map(function (Category $categoryEntity) {
+                        return $categoryEntity->getTitle();
+                    }, $tagsAsArray->toArray()));
+                },
+                function ($tagsAsString) {
+                    if (null !== $tagsAsString) {
+                        $categories = array_map(function (string $categoryTitle) {
+                            return $this->categoryRepository->findOneBy(['title' => $categoryTitle]) ?? null;
+                        }, explode(',', $tagsAsString));
+
+                        $categories = array_filter($categories, function ($category) {
+                            return null !== $category;
+                        });
+                    }
+
+                    return $categories ?? [];
+                }
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

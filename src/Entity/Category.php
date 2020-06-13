@@ -21,55 +21,55 @@ class Category
     /**
      * @ORM\Column(name="title", type="string", length=64)
      */
-    private string $title = '';
+    public string $title = '';
 
     /**
      * @Gedmo\TreeLeft
      * @ORM\Column(name="lft", type="integer")
      */
-    private int $lft;
+    public int $lft;
 
     /**
      * @Gedmo\TreeLevel
      * @ORM\Column(name="lvl", type="integer")
      */
-    private int $lvl;
+    public int $lvl;
 
     /**
      * @Gedmo\TreeRight
      * @ORM\Column(name="rgt", type="integer")
      */
-    private int $rgt;
+    public int $rgt;
 
     /**
      * @Gedmo\TreeRoot
      * @ORM\ManyToOne(targetEntity="Category")
      * @ORM\JoinColumn(name="tree_root", referencedColumnName="id", onDelete="CASCADE")
      */
-    private Category $root;
+    public Category $root;
 
     /**
      * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private ?Category $parent = null;
+    public ?Category $parent = null;
 
     /**
      * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
      * @ORM\OrderBy({"lft" = "ASC"})
      */
-    private Collection $children;
+    public Collection $children;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="categories")
      */
-    private Collection $projects;
+    public Collection $projects;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="categories")
      */
-    private Collection $users;
+    public Collection $users;
 
     public function __construct()
     {

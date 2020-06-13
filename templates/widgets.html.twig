@@ -1,10 +1,10 @@
 {% block autocomplete_widget %}
-{#    {{ dump(form.vars) }}#}
     <div class="vue-autocomplete">
         <Autocomplete id="{{ form.vars.id }}"
                       full_name="{{ form.vars.full_name }}"
                       label="{{ form.vars.attr.label ?? form.vars.name }}"
                       required="{{ form.vars.required }}"
-                      autocomplete_url="{{ form.vars.attr.autocomplete_url }}"></Autocomplete>
+                      autocomplete_url="{{ form.vars.attr.autocomplete_url }}"
+                      value="{{ form.vars.value }}"/>
     </div>
 {% endblock %}
