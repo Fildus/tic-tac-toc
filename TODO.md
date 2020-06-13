@@ -18,8 +18,8 @@
     - [ ] Mise en form front
         - [ ] Project +cat
         - [ ] (Projects, search) +cat
-        - [ ] User +cat
-    - [ ] Tests
+        - [x] User +cat
+    - [x] Tests
 - [ ] Ajouter un système de messagerie
 
 ## À faire plus tard
