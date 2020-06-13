@@ -16,7 +16,7 @@
 - [x] Ajouter un système de catégories
     - [x] Mise en form back
     - [ ] Mise en form front
-        - [ ] Project +cat
+        - [x] Project +cat
         - [ ] (Projects, search) +cat
         - [x] User +cat
     - [x] Tests

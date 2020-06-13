@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Front\Project;
 
+use App\Entity\Category;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Tests\FixturesTrait;
@@ -36,8 +37,20 @@ class NewControllerTest extends WebTestCase
 
         $newTitle = StringUtils::stringToLength('new title', 15);
         $newContent = StringUtils::stringToLength('new content', 75);
+        $categories = self::$em->getRepository(Category::class)->createQueryBuilder('category')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+        $categoriesArray = [];
+        /** @var Category $category */
+        foreach ($categories as $category) {
+            $categoriesArray[] = $category->getTitle();
+        }
+        $categoriesAsString = implode(',', $categoriesArray);
+
         $values['project_new']['title'] = $newTitle;
         $values['project_new']['content'] = $newContent;
+        $values['project_new']['categories'] = $categoriesAsString;
         $values['project_new']['_token'] = self::$container
             ->get('security.csrf.token_manager')
             ->getToken('project_new')

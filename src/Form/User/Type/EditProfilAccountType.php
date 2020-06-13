@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App\Form\User\Type;
 
-use App\Entity\Category;
 use App\Entity\User;
 use App\EventSubscriber\UserSubscriber;
 use App\Form\DataTransformer\CategoryToCollectionTransfomer;
-use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

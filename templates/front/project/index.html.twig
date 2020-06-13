@@ -22,6 +22,18 @@
                 </div>
                 <p class="card-text">{{ project.content }}</p>
             </div>
+            <div class="card-footer">
+                {% if project.categories is not empty %}
+                <div>
+                    <h5 class="d-inline-block">Categories: </h5>
+                    <ul class="list-unstyled d-inline-block">
+                        {% for category in project.categories %}
+                            <li class="badge badge-primary">{{ category.title }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
         </div>
     {% endfor %}
 {% endblock %}

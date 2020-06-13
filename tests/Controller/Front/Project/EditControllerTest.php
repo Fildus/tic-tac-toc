@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller\Front\Project;
 
+use App\Entity\Category;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Tests\FixturesTrait;
@@ -43,8 +44,20 @@ class EditControllerTest extends WebTestCase
 
         $editedTitle = StringUtils::stringToLength('edited title', 15);
         $editedContent = StringUtils::stringToLength('edited content', 75);
+        $categories = self::$em->getRepository(Category::class)->createQueryBuilder('category')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+        $categoriesArray = [];
+        /** @var Category $category */
+        foreach ($categories as $category) {
+            $categoriesArray[] = $category->getTitle();
+        }
+        $categoriesAsString = implode(',', $categoriesArray);
+
         $values['project_edit']['title'] = $editedTitle;
         $values['project_edit']['content'] = $editedContent;
+        $values['project_edit']['categories'] = $categoriesAsString;
         $values['project_edit']['_token'] = self::$container
             ->get('security.csrf.token_manager')
             ->getToken('project_edit')

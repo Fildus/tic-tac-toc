@@ -4,30 +4,6 @@
 {% block page_title %}Mes projets{% endblock %}
 
 {% block body %}
-    {#    {% for project in projects %}#}
-    {#        <div class="card mt-3 mb-3 shadow">#}
-    {#            <div class="card-header">#}
-    {#                <h2 class="card-title">{{ project.title }}</h2>#}
-    {#            </div>#}
-    {#            <div class="card-body">#}
-    {#                <p>{{ project.content }}</p>#}
-    {#            </div>#}
-    {#            <div class="card-footer d-flex justify-content-between">#}
-    {#                <div>#}
-    {#                    <small class="card-text">utilisateur: {{ project.user.username ?? 'null' }}</small>#}
-    {#                    <small class="card-text">créé le {{ project.createdAt | date }}</small>#}
-    {#                    {% if project.createdAt != project.updatedAt %}#}
-    {#                        <small class="card-text">Modifié le {{ project.updatedAt | date }}</small>#}
-    {#                    {% endif %}#}
-    {#                </div>#}
-    {#                <div>#}
-    {#                    <a href="#">messages</a>#}
-    {#                    <a href="{{ path('project_edit', {'id': project.id}) }}">modifier</a>#}
-    {#                </div>#}
-    {#            </div>#}
-    {#        </div>#}
-    {#    {% endfor %}#}
-
     {% for project in projects %}
         <div class="app-card-index-projet">
             <div class="card-body">
@@ -46,12 +22,24 @@
                 <p class="card-text">{{ project.content }}</p>
             </div>
             <div class="card-footer d-flex justify-content-between">
-                <div>
-                    {% include 'front/parts/_delete_form.html.twig' with {"entity_path": 'project_delete', "entity": project} %}
+                <div class="">
+                    {% if project.categories is not empty %}
+                        <h5 class="d-inline-block">Categories: </h5>
+                    {% endif %}
+                    <ul class="list-unstyled d-inline-block">
+                        {% for category in project.categories %}
+                            <li class="badge badge-primary">{{ category.title }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
-                <div class="text-right">
-                    <a href="{{ path('project_edit', {'id': project.id}) }}"
-                       title="{{ project.updatedAt == project.createdAt ? 'Créé le' : 'Modifié le' }} {{ project.createdAt | date }}">Éditer</a>
+                <div class="d-flex justify-content-between">
+                    <div class="pl-2 pr-2">
+                        {% include 'front/parts/_delete_form.html.twig' with {"entity_path": 'project_delete', "entity": project} %}
+                    </div>
+                    <div class="text-right">
+                        <a href="{{ path('project_edit', {'id': project.id}) }}"
+                           title="{{ project.updatedAt == project.createdAt ? 'Créé le' : 'Modifié le' }} {{ project.createdAt | date }}">Éditer</a>
+                    </div>
                 </div>
             </div>
         </div>
