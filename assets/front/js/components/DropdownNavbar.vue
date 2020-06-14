@@ -10,7 +10,7 @@
 
         <transition name="fade">
             <div v-show="showMenu"
-                 class="bg-white position-absolute bg-transparent"
+                 class="bg-white position-absolute bg-transparent position-left"
                  :class="getDropdownDir()">
                 <div class="p-1 bg-transparent"></div>
                 <div class="bg-white border rounded shadow-lg">
@@ -59,5 +59,12 @@
     .app-link:hover {
         color: #171717 !important;
         background: whitesmoke !important;
+    }
+
+    .position-left {
+        @media (max-width: 991px) {
+            left: 0;
+            right: auto;
+        }
     }
 </style>
