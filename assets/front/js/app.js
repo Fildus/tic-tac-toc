@@ -2,8 +2,7 @@ require('@fortawesome/fontawesome-free/css/all.min.css')
 require('@fortawesome/fontawesome-free/js/all')
 require('bootstrap')
 import $ from 'jquery'
-import './Elements/Navbar'
-import './Elements/Autocomplete'
+import './app-vue'
 
 setTimeout(function () {
     const alerts = document.getElementsByClassName('alert')

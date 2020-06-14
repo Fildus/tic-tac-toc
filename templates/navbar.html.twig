@@ -1,0 +1,20 @@
+<div class="bg-light sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light container">
+        <a href="{{ appNavbarConfig().home.href }}" class="navbar-brand mr-5">{{ appNavbarConfig().home.html }}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <dropdown-navbar :main="{{ appNavbarConfig().dropdown.projects.main | json_encode }}"
+                                 :sub-links="{{ appNavbarConfig().dropdown.projects.subLinks | json_encode }}"/>
+            </ul>
+            <ul class="navbar-nav">
+                <dropdown-navbar :main="{{ appNavbarConfig().dropdown.connection.main | json_encode }}"
+                                 :sub-links="{{ appNavbarConfig().dropdown.connection.subLinks | json_encode }}"
+                                 :dropdown-dir="'rigth'"/>
+            </ul>
+        </div>
+    </nav>
+</div>

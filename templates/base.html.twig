@@ -11,8 +11,8 @@
     {% endblock %}
 </head>
 <body>
-<div>
-    <Navbar config="{{ appNavbarConfig()|json_encode }}"></Navbar>
+<div id="app-vue">
+    {% include 'navbar.html.twig' %}
     {% block page_header %}
         <div class="header-backround-title">
             <div class="container"><h1>{% block page_title %}{% endblock %}</h1></div>
