@@ -46,7 +46,7 @@ tt: install build-test ## Lance le watcher phpunit
 
 .PHONY: lint
 lint: ## Analyse le code
-	docker run -v $(PWD):/app --rm phpstan/phpstan:0.12.19 analyse
+	docker run -v $(PWD):/app --rm phpstan/phpstan:0.12.27 analyse
 
 .PHONY: fix
 fix: ## Lance php-cs-fixer
