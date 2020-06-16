@@ -44,7 +44,7 @@ class LoginController
             if ($user instanceof User) {
                 $this->flashBag->add('success', [
                     'header' => '<strong>'.$user->getUsername().'</strong>',
-                    'body' => 'vous êtes maintenant connecté',
+                    'body' => 'Vous êtes déjà connecté',
                 ]);
             }
 
